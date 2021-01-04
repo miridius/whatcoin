@@ -4,7 +4,12 @@
     "es2020": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "plugins": ["jest"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:jest/recommended",
+    "plugin:jest/style"
+  ],
   "parserOptions": {
     "ecmaVersion": 11
   },
