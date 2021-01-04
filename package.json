@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "func start",
+    "lint": "eslint --fix \"**/*.js\"",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
@@ -11,10 +12,18 @@
     "serverless-telegram": "github:miridius/serverless-telegram"
   },
   "devDependencies": {
+    "eslint": "^7.17.0",
+    "husky": "^3.1.0",
+    "lint-staged": "^10.5.3",
     "prettier": "^2.2.1"
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{js,css,md,json}": "prettier --write"
   }
 }

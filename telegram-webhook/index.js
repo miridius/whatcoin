@@ -48,7 +48,7 @@ const getCurrencyId = async (currency) => {
 };
 
 const getPrice = async (currency = 'bitcoin', vs = 'usd') => {
-  id = await getCurrencyId(currency);
+  const id = await getCurrencyId(currency);
   if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
   vs = vs.toLowerCase();
   debug('getPrice(', id, vs, ')');
@@ -59,6 +59,7 @@ const getPrice = async (currency = 'bitcoin', vs = 'usd') => {
 
 module.exports = createAzureTelegramWebhook(async ({ text }, _log) => {
   // set global loggers so we don't need to pass them to every function
+  // eslint-disable-next-line no-unused-vars
   ({ verbose: debug, info, warn, error } = _log);
   // ignore non-text messages and non-commands
   if (!text?.startsWith('/')) return;
