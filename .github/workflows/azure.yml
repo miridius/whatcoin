@@ -30,8 +30,8 @@ jobs:
       - name: install deps, lint, and test
         run: |
           npm ci
-          npm run lint
-          npm test -- --ci
+          npm run ci:lint
+          npm run ci:test
 
       - name: Copy files to package dir for upload
         shell: bash

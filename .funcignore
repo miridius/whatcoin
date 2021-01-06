@@ -35,3 +35,5 @@ node_modules/.yarn-integrity
 
 README.md
 LICENSE
+
+.DS_Store

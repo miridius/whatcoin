@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Telegram Webhook /price defaults to btc in usd 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Bitcoin (BTC)* in USD
+Current price:  \`$33,890\`
+h/d/w/m: \`-0.431%\` / \`7.59%\` / \`23.6%\` / \`75.4%\` 
+Market cap:  \`$630,823,070,757\`
+24h volume:  \`$66,854,783,865\`
+_(updated Wed, 06 Jan 2021 00:50:52 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price finds coins by id partial match 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*BitMoney (BIT)* in USD
+Current price:  \`$0.00003131\`
+h/d/w/m: \`-0.119%\` / \`-0.119%\` / \`?\` / \`63.7%\` 
+Market cap:  \`$15,947.8\`
+24h volume:  \`$4.37\`
+_(updated Tue, 05 Jan 2021 14:09:21 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price finds coins by name 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*PEAKDEFI (PEAK)* in USD
+Current price:  \`$0.279679\`
+h/d/w/m: \`-0.924%\` / \`0.806%\` / \`1.21%\` / \`5.88%\` 
+Market cap:  \`$23,494,301\`
+24h volume:  \`$165,849\`
+_(updated Wed, 06 Jan 2021 00:48:50 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price finds coins by name partial match 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*PEAKDEFI (PEAK)* in USD
+Current price:  \`$0.279679\`
+h/d/w/m: \`-0.924%\` / \`0.806%\` / \`1.21%\` / \`5.88%\` 
+Market cap:  \`$23,494,301\`
+24h volume:  \`$165,849\`
+_(updated Wed, 06 Jan 2021 00:48:50 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price finds coins by symbol 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Ethereum (ETH)* in GBP
+Current price:  \`£793.93\`
+h/d/w/m: \`-2.12%\` / \`-0.509%\` / \`45.7%\` / \`76.9%\` 
+Market cap:  \`£90,922,176,512\`
+24h volume:  \`£32,871,141,733\`
+_(updated Wed, 06 Jan 2021 00:52:03 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price finds coins by symbol partial match 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*0.5X Long Algorand Token (ALGOHALF)* in USD
+Current price:  \`$8,288.27\`
+h/d/w/m: \`?\` / \`?\` / \`?\` / \`?\` 
+Market cap:  \`$0\`
+24h volume:  \`$53.96\`
+_(updated Sat, 21 Nov 2020 14:26:40 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price supports other currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Ethereum (ETH)* in EUR
+Current price:  \`€880.09\`
+h/d/w/m: \`-2.07%\` / \`-0.381%\` / \`46.6%\` / \`77.2%\` 
+Market cap:  \`€100,809,087,951\`
+24h volume:  \`€36,438,646,257\`
+_(updated Wed, 06 Jan 2021 00:52:03 GMT)_",
+}
+`;
