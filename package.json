@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "coingecko-api": "^1.0.10",
-    "serverless-telegram": "github:miridius/serverless-telegram"
+    "serverless-telegram": "^0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.19",
