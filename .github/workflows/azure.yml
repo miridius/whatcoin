@@ -27,19 +27,14 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: install deps, lint, and test
-        run: |
-          npm ci
-          npm run ci:lint
-          npm run ci:test
+      - name: Install deps
+        run: npm ci
 
-      - name: Copy files to package dir for upload
-        shell: bash
-        run: |
-          # Remove devDependencies so they don't get deployed
-          npm ci --production
-          # Use rsync so that we can exclude anything in .funcignore
-          rsync -av --prune-empty-dirs --exclude-from .funcignore ./ ${{ env.PACKAGE_DIR }}
+      - name: Lint
+        run: npm run ci:lint
+
+      - name: Test
+        run: npm run ci:test
 
   deploy:
     name: Deploy to Azure Function App
@@ -54,11 +49,12 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Install production deps, prepare ${{ env.PACKAGE_DIR }} dir for upload
-        run: |
-          npm ci --production
-          # Use rsync so that we can exclude anything in .funcignore
-          rsync -av --prune-empty-dirs --exclude-from .funcignore ./ ${{ env.PACKAGE_DIR }}
+      - name: Install production deps
+        run: npm ci --production
+
+      - name: Prepare ${{ env.PACKAGE_DIR }} dir for upload
+        # Use rsync so that we can exclude anything in .funcignore
+        run: rsync -av --prune-empty-dirs --exclude-from .funcignore ./ ${{ env.PACKAGE_DIR }}
 
       - name: Deploy to Staging (${{ env.AZURE_APP_NAME_STAGING }})
         if: ${{ startsWith(github.ref, 'refs/heads/') }}
