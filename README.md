@@ -9,18 +9,15 @@ It runs on Azure Functions using the [serverless-telegram](https://github.com/mi
 Available commands:
 
 - `/price <crypto name or symbol> [<base currency symbol>]`
+- `/convert <amount> <from name or symbol> <to name or symbol>`
 
-## CI/CD
+## Local development
 
-- Any PR to master will run linting and tests
-- Any commit to master that passes lint/tests will deploy to Staging (@DevWhatCoinBot)
-- If the commit is tagged it will also deploy to Prod (@WhatCoinBot). Create a tag using `np` as follows:
+- Run the function locally in watch mode with `npm start`
+- Run all tests in watch mode with `npm run test:watch`
 
-```bash
-# Install np globally if not already installed
-npm i -g np
-# Choose ONE of the commands below depending on type of release
-np patch --no-publish --no-yarn
-np minor --no-publish --no-yarn
-np major --no-publish --no-yarn
-```
+## Deployment using CI/CD
+
+- Deployment will only run if lint and tests pass
+- Push to master (or merge a PR) to deploy to Staging (@DevWhatCoinBot)
+- Create a release using `npm run release` to deploy to Prod (@WhatCoinBot)

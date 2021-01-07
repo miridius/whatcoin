@@ -4,11 +4,12 @@
   "description": "",
   "scripts": {
     "start": "func start",
-    "lint": "eslint --fix \"**/*.js\" && prettier -w \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
-    "test": "jest --clearCache && jest",
+    "lint": "eslint \"**/*.js\" && prettier -c \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
+    "lint:fix": "eslint --fix \"**/*.js\" && prettier -w \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
+    "test": "jest --ci",
+    "test:update-snapshots": "jest -u",
     "test:watch": "jest --watchAll",
-    "ci:lint": "eslint \"**/*.js\" && prettier -c \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
-    "ci:test": "jest --ci"
+    "release": "npx np --no-publish --no-yarn"
   },
   "dependencies": {
     "coingecko-api": "^1.0.10",
