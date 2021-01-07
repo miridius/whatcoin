@@ -7,45 +7,68 @@ const DAVO_CHAT_ID = 60764253;
 let locale, debug, info, warn;
 
 let _coinsList;
+let _gettingCoinsList = false;
 const getCoinsList = async () => {
+  while (_gettingCoinsList) await new Promise((r) => setTimeout(r, 10));
   if (!_coinsList) {
     info('fetching coins list...');
+    _gettingCoinsList = true;
     _coinsList = (await api.coins.list())?.data?.map((coin) => {
       coin.id = coin.id?.toLowerCase();
       coin.symbol = coin.symbol?.toLowerCase();
       coin.name = coin.name?.toLowerCase();
       return coin;
     });
+    _gettingCoinsList = false;
     info('got', _coinsList?.length, 'coins');
   }
   return _coinsList;
 };
 
-const getCurrencyId = async (currency) => {
-  if (currency === 'bitcoin') return currency;
-  currency = currency.toLowerCase();
-  debug('searching for', currency);
-  let symMatch, nameMatch, idPreMatch, symPreMatch, namePreMatch;
-  for (const { id, symbol, name } of await getCoinsList()) {
-    if (id === currency) {
-      debug('exact match');
-      return id;
-    } else if (symbol === currency) {
-      symMatch = id;
+let _vsCurrencies;
+const getVsCurrencies = async () => {
+  if (!_vsCurrencies?.size) {
+    info('fetching supported vs currencies...');
+    _vsCurrencies = new Set((await api.simple.supportedVsCurrencies())?.data);
+    info('got', _vsCurrencies?.size, 'vs currencies');
+  }
+  return _vsCurrencies;
+};
+
+const getCoin = async (searchString) => {
+  searchString = searchString.toLowerCase();
+  debug('searching for', searchString);
+  let symbolMatch, nameMatch, idPreMatch, symbolPreMatch, namePreMatch;
+  for (const coin of await getCoinsList()) {
+    const { id, symbol, name } = coin;
+    if (id === searchString) {
+      debug(`${id} is an exact match`);
+      return coin;
+    } else if (symbol === searchString) {
+      symbolMatch = coin;
       break; // don't need to keep searching, this is the best type of match
-    } else if (name === currency) {
-      nameMatch = id;
-    } else if (symbol.startsWith(currency)) {
-      symPreMatch = id;
-    } else if (id.startsWith(currency)) {
-      idPreMatch = id;
-    } else if (name.startsWith(currency)) {
-      namePreMatch = id;
+    } else if (name === searchString) {
+      nameMatch = coin;
+    } else if (symbol.startsWith(searchString)) {
+      symbolPreMatch = coin;
+    } else if (id.startsWith(searchString)) {
+      idPreMatch = coin;
+    } else if (name.startsWith(searchString)) {
+      namePreMatch = coin;
     }
   }
-  const id = symMatch || nameMatch || idPreMatch || symPreMatch || namePreMatch;
-  debug(id ? `closest match is ${id}` : 'no match found');
-  return id;
+  const coin =
+    symbolMatch || nameMatch || idPreMatch || symbolPreMatch || namePreMatch;
+  debug(coin ? `closest match is ${coin.id}` : 'no match found');
+  return coin;
+};
+
+const getVs = async (vs_currency) => {
+  vs_currency = vs_currency.toLowerCase();
+  if ((await getVsCurrencies()).has(vs_currency)) return vs_currency;
+  debug(`${vs_currency} is not a valid vs currency, looking up its symbol`);
+  const { symbol } = (await getCoin(vs_currency)) || {};
+  if (symbol && (await getVsCurrencies()).has(symbol)) return symbol;
 };
 
 const formatNumber = (num, currency, sigFig = 6) =>
@@ -74,11 +97,17 @@ _(updated ${new Date(data.last_updated).toUTCString()})_`,
   };
 };
 
-const getPrice = async (currency = 'bitcoin', vs = 'usd') => {
-  const id = await getCurrencyId(currency);
+const getPrice = async (currency = 'bitcoin', vs_currency = 'usd') => {
+  const [{ id } = {}, vs] = await Promise.all([
+    getCoin(currency),
+    getVs(vs_currency),
+  ]);
   if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
-  vs = vs.toLowerCase();
-  debug('getPrice(', id, vs, ')');
+  if (!vs)
+    return `Sorry, I can't list prices in ${vs_currency}. Supported base currencies are: ${[
+      ...(await getVsCurrencies()),
+    ].join(', ')}`;
+  debug(`getting market info for ${id} in ${vs}...`);
   const res = await api.coins.markets({
     ids: id,
     vs_currency: vs,
@@ -86,6 +115,40 @@ const getPrice = async (currency = 'bitcoin', vs = 'usd') => {
   });
   debug('res:', res);
   return res?.data?.[0] && formatPriceData(res?.data?.[0], vs);
+};
+
+const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
+  const amt = parseFloat(amount);
+  if (isNaN(amt)) return `Amount '${amount}' is not a valid number`;
+  const [{ id, symbol } = {}, vs] = await Promise.all([
+    getCoin(from),
+    getVs(to),
+  ]);
+  if (!id) return `Sorry, I couldn't find ${from}. Try using the full name`;
+  if (vs) {
+    debug(`getting simple price for ${id} in ${vs}...`);
+    const res = await api.simple.price({ ids: id, vs_currencies: vs });
+    debug('res:', res);
+    const price = res?.data?.[id]?.[vs];
+    if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
+    return `${amt} ${symbol.toUpperCase()} = ${formatNumber(amt * price, vs)}`;
+  } else {
+    const { id: to_id, symbol: to_symbol } = (await getCoin(to)) || {};
+    if (!to_id) return `Sorry, I couldn't find ${to}. Try using the full name`;
+    debug(`getting simple price for ${id} and ${to_id} in usd...`);
+    const res = await api.simple.price({
+      ids: [id, to_id],
+      vs_currencies: 'usd',
+    });
+    debug('res:', res);
+    const price = res?.data?.[id]?.usd;
+    if (!price) return `Sorry, I couldn't look up the price for ${id}`;
+    const to_price = res?.data?.[to_id]?.usd;
+    if (!to_price) return `Sorry, I couldn't look up the price for ${to_id}`;
+    return `${amt} ${symbol.toUpperCase()} = ${formatNumber(
+      (amt * price) / to_price,
+    )} ${to_symbol.toUpperCase()}`;
+  }
 };
 
 module.exports = createAzureTelegramWebhook(
@@ -105,6 +168,8 @@ module.exports = createAzureTelegramWebhook(
         return 'usage: /price <crypto name or symbol> [<base currency symbol>]';
       case '/price':
         return getPrice(...args);
+      case '/convert':
+        return convert(...args);
       default:
         warn(`Unknown command: ${cmd}`);
         return;

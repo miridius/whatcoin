@@ -1,0 +1,59 @@
+[
+  {
+    "scope": "https://api.coingecko.com:443",
+    "method": "GET",
+    "path": "/api/v3/simple/price?ids=ethereum&vs_currencies=aud",
+    "body": "",
+    "status": 200,
+    "response": {
+      "ethereum": {
+        "aud": 1583.3
+      }
+    },
+    "rawHeaders": [
+      "Date",
+      "Thu, 07 Jan 2021 14:29:29 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Set-Cookie",
+      "__cfduid=d80052ff2bed1699367cc1f5a0b95526c1610029769; expires=Sat, 06-Feb-21 14:29:29 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "Cache-Control",
+      "max-age=60, public, must-revalidate, s-maxage=60",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "POST, PUT, DELETE, GET, OPTIONS",
+      "Access-Control-Request-Method",
+      "*",
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Expose-Headers",
+      "link, per-page, total",
+      "Vary",
+      "Accept-Encoding, Origin",
+      "ETag",
+      "W/\"337f73fe051882b0b4cd3f99f1b39b02\"",
+      "X-Request-Id",
+      "f4a64920-2e6a-4f74-b876-b71f894c9ee3",
+      "X-Runtime",
+      "0.004603",
+      "Alternate-Protocol",
+      "443:npn-spdy/2",
+      "CF-Cache-Status",
+      "EXPIRED",
+      "cf-request-id",
+      "077ed9b92e00002bc28cbc4000000001",
+      "Expect-CT",
+      "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "60de5f084cb42bc2-FRA"
+    ],
+    "responseIsBinary": false
+  }
+]

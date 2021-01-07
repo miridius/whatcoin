@@ -1,76 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Telegram Webhook /price defaults to btc in usd 1`] = `
+exports[`Telegram Webhook /convert () - defaults to 1 btc in usd 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "1 BTC = $38,549",
+}
+`;
+
+exports[`Telegram Webhook /convert (100, asdfasdf) - returns an error for invalid coin 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+}
+`;
+
+exports[`Telegram Webhook /convert (100, doge, ark) - supports coin to coin 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "100 DOGE = 2.4112 ARK",
+}
+`;
+
+exports[`Telegram Webhook /convert (100, eth, asdfasdf) - returns an error for invalid vs 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+}
+`;
+
+exports[`Telegram Webhook /convert (1000, ethereum, aud) - supports other currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "1000 ETH = A$1,583,300",
+}
+`;
+
+exports[`Telegram Webhook /convert (foo) - returns an error for invalid amount 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Amount 'foo' is not a valid number",
+}
+`;
+
+exports[`Telegram Webhook /price () - defaults to btc in usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Bitcoin (BTC)* in USD
-Current price:  \`$33,890\`
-h/d/w/m: \`-0.431%\` / \`7.59%\` / \`23.6%\` / \`75.4%\` 
-Market cap:  \`$630,823,070,757\`
-24h volume:  \`$66,854,783,865\`
-_(updated Wed, 06 Jan 2021 00:50:52 GMT)_",
+Current price:  \`$38,549\`
+h/d/w/m: \`0.0819%\` / \`11.9%\` / \`33.7%\` / \`101%\` 
+Market cap:  \`$718,577,416,969\`
+24h volume:  \`$73,907,888,421\`
+_(updated Thu, 07 Jan 2021 14:27:08 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price finds coins by id partial match 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "parse_mode": "markdown",
-  "text": "*BitMoney (BIT)* in USD
-Current price:  \`$0.00003131\`
-h/d/w/m: \`-0.119%\` / \`-0.119%\` / \`?\` / \`63.7%\` 
-Market cap:  \`$15,947.8\`
-24h volume:  \`$4.37\`
-_(updated Tue, 05 Jan 2021 14:09:21 GMT)_",
-}
-`;
-
-exports[`Telegram Webhook /price finds coins by name 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "parse_mode": "markdown",
-  "text": "*PEAKDEFI (PEAK)* in USD
-Current price:  \`$0.279679\`
-h/d/w/m: \`-0.924%\` / \`0.806%\` / \`1.21%\` / \`5.88%\` 
-Market cap:  \`$23,494,301\`
-24h volume:  \`$165,849\`
-_(updated Wed, 06 Jan 2021 00:48:50 GMT)_",
-}
-`;
-
-exports[`Telegram Webhook /price finds coins by name partial match 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "parse_mode": "markdown",
-  "text": "*PEAKDEFI (PEAK)* in USD
-Current price:  \`$0.279679\`
-h/d/w/m: \`-0.924%\` / \`0.806%\` / \`1.21%\` / \`5.88%\` 
-Market cap:  \`$23,494,301\`
-24h volume:  \`$165,849\`
-_(updated Wed, 06 Jan 2021 00:48:50 GMT)_",
-}
-`;
-
-exports[`Telegram Webhook /price finds coins by symbol 1`] = `
+exports[`Telegram Webhook /price (ETH, GBP) - finds coins by symbol 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in GBP
-Current price:  \`£793.93\`
-h/d/w/m: \`-2.12%\` / \`-0.509%\` / \`45.7%\` / \`76.9%\` 
-Market cap:  \`£90,922,176,512\`
-24h volume:  \`£32,871,141,733\`
-_(updated Wed, 06 Jan 2021 00:52:03 GMT)_",
+Current price:  \`£902.26\`
+h/d/w/m: \`-0.215%\` / \`6.72%\` / \`63.3%\` / \`103%\` 
+Market cap:  \`£103,014,363,730\`
+24h volume:  \`£30,758,456,011\`
+_(updated Thu, 07 Jan 2021 14:28:44 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price finds coins by symbol partial match 1`] = `
+exports[`Telegram Webhook /price (PEAKDEFI) - finds coins by name 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*PEAKDEFI (PEAK)* in USD
+Current price:  \`$0.270058\`
+h/d/w/m: \`0.677%\` / \`0.248%\` / \`-1.1%\` / \`4.35%\` 
+Market cap:  \`$24,090,107\`
+24h volume:  \`$404,893\`
+_(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price (algoha) - finds coins by symbol partial match 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -84,16 +104,74 @@ _(updated Sat, 21 Nov 2020 14:26:40 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price supports other currencies 1`] = `
+exports[`Telegram Webhook /price (asdfasdf, eur) - returns an error for invalid coin 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+}
+`;
+
+exports[`Telegram Webhook /price (bitcoin, asdasd) - returns an error for invalid vs currency 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I can't list prices in asdasd. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau",
+}
+`;
+
+exports[`Telegram Webhook /price (bitm) - finds coins by id partial match 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*BitMoney (BIT)* in USD
+Current price:  \`$0.00003131\`
+h/d/w/m: \`?\` / \`?\` / \`?\` / \`63.1%\` 
+Market cap:  \`$15,947.8\`
+24h volume:  \`$4.37\`
+_(updated Tue, 05 Jan 2021 14:09:21 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price (doge, bitcoin) - finds vs by coin id 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Dogecoin (DOGE)* in BTC
+Current price:  \`BTC 0.0000002643\`
+h/d/w/m: \`-0.419%\` / \`-10.8%\` / \`63.8%\` / \`52.1%\` 
+Market cap:  \`BTC 33,766\`
+24h volume:  \`BTC 13,775\`
+_(updated Thu, 07 Jan 2021 14:27:53 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price (ethereum, eur) - supports other currencies 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in EUR
-Current price:  \`€880.09\`
-h/d/w/m: \`-2.07%\` / \`-0.381%\` / \`46.6%\` / \`77.2%\` 
-Market cap:  \`€100,809,087,951\`
-24h volume:  \`€36,438,646,257\`
-_(updated Wed, 06 Jan 2021 00:52:03 GMT)_",
+Current price:  \`€999.21\`
+h/d/w/m: \`-0.291%\` / \`7.25%\` / \`63.2%\` / \`104%\` 
+Market cap:  \`€114,098,707,361\`
+24h volume:  \`€34,063,378,632\`
+_(updated Thu, 07 Jan 2021 14:28:44 GMT)_",
+}
+`;
+
+exports[`Telegram Webhook /price (peakd) - finds coins by name partial match 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*PEAKDEFI (PEAK)* in USD
+Current price:  \`$0.270058\`
+h/d/w/m: \`0.677%\` / \`0.248%\` / \`-1.1%\` / \`4.35%\` 
+Market cap:  \`$24,090,107\`
+24h volume:  \`$404,893\`
+_(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
 }
 `;

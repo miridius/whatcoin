@@ -3487,11 +3487,6 @@
         "name": "Bfine"
       },
       {
-        "id": "bfx-coin",
-        "symbol": "bfx",
-        "name": "BFX COIN"
-      },
-      {
         "id": "bgogo",
         "symbol": "bgg",
         "name": "Bgogo Token"
@@ -3997,11 +3992,6 @@
         "name": "BitcoinInvest"
       },
       {
-        "id": "bitcoin-le",
-        "symbol": "ble",
-        "name": "Bitcoin LE"
-      },
-      {
         "id": "bitcoin-lightning",
         "symbol": "bltg",
         "name": "Block-Logic"
@@ -4255,6 +4245,11 @@
         "id": "bitdice",
         "symbol": "csno",
         "name": "BitDice"
+      },
+      {
+        "id": "bitdns",
+        "symbol": "dns",
+        "name": "BitDNS"
       },
       {
         "id": "bitethereum",
@@ -5422,6 +5417,11 @@
         "name": "Brazilian Digital Token"
       },
       {
+        "id": "bscex",
+        "symbol": "bscx",
+        "name": "BSCEX"
+      },
+      {
         "id": "bsc-farm",
         "symbol": "bsc",
         "name": "BSC Farm"
@@ -6457,6 +6457,11 @@
         "name": "Cipher Core Token"
       },
       {
+        "id": "circleswap",
+        "symbol": "cir",
+        "name": "CircleSwap"
+      },
+      {
         "id": "circuit",
         "symbol": "crct",
         "name": "Circuit"
@@ -7055,6 +7060,11 @@
         "id": "connect-coin",
         "symbol": "xcon",
         "name": "Connect Coin"
+      },
+      {
+        "id": "connect-financial",
+        "symbol": "cnfi",
+        "name": "Connect Financial"
       },
       {
         "id": "connectjob",
@@ -8189,7 +8199,7 @@
       {
         "id": "darkpaycoin",
         "symbol": "d4rk",
-        "name": "DarkPayCoin"
+        "name": "DARK"
       },
       {
         "id": "darma-cash",
@@ -8610,6 +8620,11 @@
         "id": "definer",
         "symbol": "fin",
         "name": "DeFiner"
+      },
+      {
+        "id": "definex",
+        "symbol": "dswap",
+        "name": "Definex"
       },
       {
         "id": "definitex",
@@ -9482,11 +9497,6 @@
         "name": "Dragon Option"
       },
       {
-        "id": "dragon-token",
-        "symbol": "dt",
-        "name": "Dragon Token"
-      },
-      {
         "id": "dragonvein",
         "symbol": "dvc",
         "name": "DragonVein"
@@ -10015,6 +10025,11 @@
         "id": "electra",
         "symbol": "eca",
         "name": "Electra"
+      },
+      {
+        "id": "electra-protocol",
+        "symbol": "xep",
+        "name": "Electra Protocol"
       },
       {
         "id": "electric-token",
@@ -13222,6 +13237,11 @@
         "name": "GROWTH DeFi"
       },
       {
+        "id": "grpl-finance-2",
+        "symbol": "grpl",
+        "name": "GRPL Finance"
+      },
+      {
         "id": "gsenetwork",
         "symbol": "gse",
         "name": "GSENetwork"
@@ -13907,6 +13927,11 @@
         "name": "Holyheld"
       },
       {
+        "id": "holy-trinity",
+        "symbol": "holy",
+        "name": "Holy Trinity"
+      },
+      {
         "id": "homeros",
         "symbol": "hmr",
         "name": "Homeros"
@@ -14525,11 +14550,6 @@
         "id": "improved-bitcoin",
         "symbol": "iBTC",
         "name": "Improved Bitcoin"
-      },
-      {
-        "id": "imsmart-token",
-        "symbol": "imt",
-        "name": "IMSMART Token"
       },
       {
         "id": "ims-wallet",
@@ -17167,6 +17187,11 @@
         "name": "Mano Coin"
       },
       {
+        "id": "mantis-network",
+        "symbol": "mntis",
+        "name": "Mantis Network"
+      },
+      {
         "id": "mantra-dao",
         "symbol": "om",
         "name": "MANTRA DAO"
@@ -18447,11 +18472,6 @@
         "name": "MRV"
       },
       {
-        "id": "msa",
-        "symbol": "msa",
-        "name": "MSA"
-      },
-      {
         "id": "msn",
         "symbol": "msn",
         "name": "MSN"
@@ -19080,6 +19100,11 @@
         "id": "nexdax",
         "symbol": "nt",
         "name": "NexDAX"
+      },
+      {
+        "id": "nexfin",
+        "symbol": "nex",
+        "name": "NexFin"
       },
       {
         "id": "nexo",
@@ -21142,11 +21167,6 @@
         "name": "Polis"
       },
       {
-        "id": "politicoin",
-        "symbol": "pblc",
-        "name": "Politicoin"
-      },
-      {
         "id": "polkadot",
         "symbol": "dot",
         "name": "Polkadot"
@@ -21390,6 +21410,11 @@
         "id": "primedao",
         "symbol": "prime",
         "name": "PrimeDAO"
+      },
+      {
+        "id": "prime-finance",
+        "symbol": "pfi",
+        "name": "Prime Finance"
       },
       {
         "id": "primestone",
@@ -22502,6 +22527,11 @@
         "name": "Imbrex"
       },
       {
+        "id": "rfyield-finance",
+        "symbol": "rfy",
+        "name": "RFYield Finance"
+      },
+      {
         "id": "rheaprotocol",
         "symbol": "rhea",
         "name": "Rhea Protocol"
@@ -22765,6 +22795,11 @@
         "id": "rotharium",
         "symbol": "rth",
         "name": "Rotharium"
+      },
+      {
+        "id": "roti-bank-coin",
+        "symbol": "rbc",
+        "name": "Roti Bank Coin"
       },
       {
         "id": "rotten",
@@ -23292,11 +23327,6 @@
         "name": "Secret"
       },
       {
-        "id": "secret-verification-network",
-        "symbol": "svn",
-        "name": "Secret Verification Network"
-      },
-      {
         "id": "secure-cash",
         "symbol": "scsx",
         "name": "Secure Cash"
@@ -23310,6 +23340,11 @@
         "id": "securus",
         "symbol": "xscr",
         "name": "Securus"
+      },
+      {
+        "id": "securypto",
+        "symbol": "scu",
+        "name": "Securypto"
       },
       {
         "id": "sedo-pow-token",
@@ -23462,6 +23497,11 @@
         "name": "Serum"
       },
       {
+        "id": "serum-ecosystem-token",
+        "symbol": "seco",
+        "name": "Serum Ecosystem Token"
+      },
+      {
         "id": "sessia",
         "symbol": "kicks",
         "name": "SESSIA"
@@ -23500,6 +23540,11 @@
         "id": "s-finance",
         "symbol": "sfg",
         "name": "S.Finance"
+      },
+      {
+        "id": "shabu-shabu",
+        "symbol": "kobe",
+        "name": "Shabu Shabu"
       },
       {
         "id": "shadow-token",
@@ -24942,11 +24987,6 @@
         "name": "Stream"
       },
       {
-        "id": "streamies",
-        "symbol": "strms",
-        "name": "Streamies"
-      },
-      {
         "id": "streamit-coin",
         "symbol": "stream",
         "name": "STREAMIT COIN"
@@ -25005,11 +25045,6 @@
         "id": "stronghold-token",
         "symbol": "shx",
         "name": "Stronghold Token"
-      },
-      {
-        "id": "strx",
-        "symbol": "strx",
-        "name": "sTRX"
       },
       {
         "id": "stvke-network",
@@ -27017,6 +27052,11 @@
         "name": "TUNE TOKEN"
       },
       {
+        "id": "tunnel-protocol",
+        "symbol": "tni",
+        "name": "Tunnel Protocol"
+      },
+      {
         "id": "turbostake",
         "symbol": "trbo",
         "name": "TRBO"
@@ -27705,11 +27745,6 @@
         "id": "usd-coin",
         "symbol": "usdc",
         "name": "USD Coin"
-      },
-      {
-        "id": "usdg",
-        "symbol": "usdg",
-        "name": "USDG"
       },
       {
         "id": "usdk",
@@ -29132,6 +29167,11 @@
         "name": "Wrapped Polis"
       },
       {
+        "id": "wrapped-statera",
+        "symbol": "wsta",
+        "name": "Wrapped Statera"
+      },
+      {
         "id": "wrapped-virgin-gen-0-cryptokitties",
         "symbol": "wvg0",
         "name": "Wrapped Virgin Gen-0 CryptoKittties"
@@ -30252,6 +30292,21 @@
         "name": "Zel"
       },
       {
+        "id": "zelda-elastic-cash",
+        "symbol": "zelda elastic cash",
+        "name": "Zelda Elastic Cash"
+      },
+      {
+        "id": "zelda-spring-nuts-cash",
+        "symbol": "zelda spring nuts cash",
+        "name": "Zelda Spring Nuts Cash"
+      },
+      {
+        "id": "zelda-summer-nuts-cash",
+        "symbol": "zelda summer nuts cash",
+        "name": "Zelda Summer Nuts Cash"
+      },
+      {
         "id": "zelwin",
         "symbol": "zlw",
         "name": "Zelwin"
@@ -30447,6 +30502,11 @@
         "name": "ZJLT Distributed Factoring Network"
       },
       {
+        "id": "zkswap",
+        "symbol": "zks",
+        "name": "ZKSwap"
+      },
+      {
         "id": "zloadr",
         "symbol": "zdr",
         "name": "Zloadr"
@@ -30590,11 +30650,16 @@
         "id": "zzz-finance",
         "symbol": "zzz",
         "name": "zzz.finance"
+      },
+      {
+        "id": "zzz-finance-v2",
+        "symbol": "zzzv2",
+        "name": "zzz.finance v2"
       }
     ],
     "rawHeaders": [
       "Date",
-      "Wed, 06 Jan 2021 00:52:58 GMT",
+      "Thu, 07 Jan 2021 14:29:24 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Transfer-Encoding",
@@ -30602,7 +30667,7 @@
       "Connection",
       "close",
       "Set-Cookie",
-      "__cfduid=ded333714736d0385a6228c5408a68c531609894378; expires=Fri, 05-Feb-21 00:52:58 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "__cfduid=d888c6e44e9aaae48b7e5749ca041a5711610029764; expires=Sat, 06-Feb-21 14:29:24 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
       "Cache-Control",
       "max-age=60, public, must-revalidate, s-maxage=300",
       "Access-Control-Allow-Origin",
@@ -30618,75 +30683,98 @@
       "Vary",
       "Accept-Encoding, Origin",
       "ETag",
-      "W/\"36fd650afda139e9ea342554e9a98702\"",
+      "W/\"35b850c333e58d2e908cda8ffd6ed07d\"",
       "X-Request-Id",
-      "b82ed1c5-22d9-438e-85a0-ef547c3aa12a",
+      "ad690170-e769-4edb-b5d1-f71810a5a1e0",
       "X-Runtime",
-      "1.646807",
+      "1.274991",
       "Alternate-Protocol",
       "443:npn-spdy/2",
       "CF-Cache-Status",
       "HIT",
       "Age",
-      "214",
+      "276",
       "cf-request-id",
-      "0776c7d45d0000d6f54bad8000000001",
+      "077ed9a7b70000061c491d2000000001",
       "Expect-CT",
       "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "60d1759a2a00d6f5-FRA"
+      "60de5eec5df3061c-FRA"
     ],
     "responseIsBinary": false
   },
   {
     "scope": "https://api.coingecko.com:443",
     "method": "GET",
-    "path": "/api/v3/coins/markets?ids=ethereum&vs_currency=eur&price_change_percentage=1h%2C24h%2C7d%2C30d",
+    "path": "/api/v3/simple/supported_vs_currencies",
     "body": "",
     "status": 200,
     "response": [
-      {
-        "id": "ethereum",
-        "symbol": "eth",
-        "name": "Ethereum",
-        "image": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
-        "current_price": 880.09,
-        "market_cap": 100809087951,
-        "market_cap_rank": 2,
-        "fully_diluted_valuation": null,
-        "total_volume": 36438646257,
-        "high_24h": 908.88,
-        "low_24h": 803.16,
-        "price_change_24h": -3.3619746,
-        "price_change_percentage_24h": -0.38055,
-        "market_cap_change_24h": -10697172.03257752,
-        "market_cap_change_percentage_24h": -0.01061,
-        "circulating_supply": 114133202.499,
-        "total_supply": null,
-        "max_supply": null,
-        "ath": 1187.08,
-        "ath_change_percentage": -25.6536,
-        "ath_date": "2018-01-13T00:00:00.000Z",
-        "atl": 0.381455,
-        "atl_change_percentage": 231263.9957,
-        "atl_date": "2015-10-20T00:00:00.000Z",
-        "roi": {
-          "times": 41.71668637011945,
-          "currency": "btc",
-          "percentage": 4171.668637011945
-        },
-        "last_updated": "2021-01-06T00:52:03.377Z",
-        "price_change_percentage_1h_in_currency": -2.07333791633588,
-        "price_change_percentage_24h_in_currency": -0.380547835893848,
-        "price_change_percentage_30d_in_currency": 77.24154187624413,
-        "price_change_percentage_7d_in_currency": 46.58677373587313
-      }
+      "btc",
+      "eth",
+      "ltc",
+      "bch",
+      "bnb",
+      "eos",
+      "xrp",
+      "xlm",
+      "link",
+      "dot",
+      "yfi",
+      "usd",
+      "aed",
+      "ars",
+      "aud",
+      "bdt",
+      "bhd",
+      "bmd",
+      "brl",
+      "cad",
+      "chf",
+      "clp",
+      "cny",
+      "czk",
+      "dkk",
+      "eur",
+      "gbp",
+      "hkd",
+      "huf",
+      "idr",
+      "ils",
+      "inr",
+      "jpy",
+      "krw",
+      "kwd",
+      "lkr",
+      "mmk",
+      "mxn",
+      "myr",
+      "ngn",
+      "nok",
+      "nzd",
+      "php",
+      "pkr",
+      "pln",
+      "rub",
+      "sar",
+      "sek",
+      "sgd",
+      "thb",
+      "try",
+      "twd",
+      "uah",
+      "vef",
+      "vnd",
+      "zar",
+      "xdr",
+      "xag",
+      "xau"
     ],
     "rawHeaders": [
       "Date",
-      "Wed, 06 Jan 2021 00:52:58 GMT",
+      "Thu, 07 Jan 2021 14:29:24 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Transfer-Encoding",
@@ -30694,7 +30782,7 @@
       "Connection",
       "close",
       "Set-Cookie",
-      "__cfduid=d44b6d1f9aab4fcfefd401568afb87e3a1609894378; expires=Fri, 05-Feb-21 00:52:58 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "__cfduid=db21d47be6a2b18cd1ffb18d97de433411610029764; expires=Sat, 06-Feb-21 14:29:24 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
       "Cache-Control",
       "max-age=60, public, must-revalidate, s-maxage=60",
       "Access-Control-Allow-Origin",
@@ -30710,23 +30798,109 @@
       "Vary",
       "Accept-Encoding, Origin",
       "ETag",
-      "W/\"3caf4efa781697147c7bcc861dd01edb\"",
+      "W/\"249935df75f6d6cffae9f8151306a9ba\"",
       "X-Request-Id",
-      "3779e19c-213a-4edb-b4aa-dd251683ce86",
+      "eb32984d-1a21-4f90-89cc-d11bfa586576",
       "X-Runtime",
-      "0.015857",
+      "0.002655",
       "Alternate-Protocol",
       "443:npn-spdy/2",
       "CF-Cache-Status",
       "EXPIRED",
       "cf-request-id",
-      "0776c7d51100002c3e439a4000000001",
+      "077ed9a7b3000063e91d312000000001",
       "Expect-CT",
       "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "60d1759b4b772c3e-FRA"
+      "60de5eec5eb963e9-FRA"
+    ],
+    "responseIsBinary": false
+  },
+  {
+    "scope": "https://api.coingecko.com:443",
+    "method": "GET",
+    "path": "/api/v3/coins/markets?ids=bitcoin&vs_currency=usd&price_change_percentage=1h%2C24h%2C7d%2C30d",
+    "body": "",
+    "status": 200,
+    "response": [
+      {
+        "id": "bitcoin",
+        "symbol": "btc",
+        "name": "Bitcoin",
+        "image": "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+        "current_price": 38549,
+        "market_cap": 718577416969,
+        "market_cap_rank": 1,
+        "fully_diluted_valuation": 811575811970,
+        "total_volume": 73907888421,
+        "high_24h": 38646,
+        "low_24h": 34388,
+        "price_change_24h": 4107.93,
+        "price_change_percentage_24h": 11.92747,
+        "market_cap_change_24h": 80901688703,
+        "market_cap_change_percentage_24h": 12.68696,
+        "circulating_supply": 18593612,
+        "total_supply": 21000000,
+        "max_supply": 21000000,
+        "ath": 38624,
+        "ath_change_percentage": 0.05716,
+        "ath_date": "2021-01-07T14:08:49.711Z",
+        "atl": 67.81,
+        "atl_change_percentage": 56893.12368,
+        "atl_date": "2013-07-06T00:00:00.000Z",
+        "roi": null,
+        "last_updated": "2021-01-07T14:27:08.787Z",
+        "price_change_percentage_1h_in_currency": 0.08189710511244838,
+        "price_change_percentage_24h_in_currency": 11.927468229182525,
+        "price_change_percentage_30d_in_currency": 100.78774845756256,
+        "price_change_percentage_7d_in_currency": 33.67710092155697
+      }
+    ],
+    "rawHeaders": [
+      "Date",
+      "Thu, 07 Jan 2021 14:29:25 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Set-Cookie",
+      "__cfduid=daf103f49b307851c7b1b867e7cd3523b1610029764; expires=Sat, 06-Feb-21 14:29:24 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "Cache-Control",
+      "max-age=60, public, must-revalidate, s-maxage=60",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "POST, PUT, DELETE, GET, OPTIONS",
+      "Access-Control-Request-Method",
+      "*",
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Expose-Headers",
+      "link, per-page, total",
+      "Vary",
+      "Accept-Encoding, Origin",
+      "ETag",
+      "W/\"1261368d5d5b983a123a0af0ee04f5c0\"",
+      "X-Request-Id",
+      "9efaa4f0-364b-4317-9d28-f308e4e102e1",
+      "X-Runtime",
+      "0.018047",
+      "Alternate-Protocol",
+      "443:npn-spdy/2",
+      "CF-Cache-Status",
+      "EXPIRED",
+      "cf-request-id",
+      "077ed9a8910000c28be727c000000001",
+      "Expect-CT",
+      "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "60de5eedbb8fc28b-FRA"
     ],
     "responseIsBinary": false
   }

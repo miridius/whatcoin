@@ -1,29 +1,37 @@
+/* eslint-disable jest/expect-expect */
 const telegramWebhook = require('../telegram-webhook');
 const ctx = require('./defaultContext');
 const nock = require('nock');
-
-const API_URL = 'https://api.coingecko.com/api/v3';
+const filenamify = require('filenamify');
 
 afterAll(() => nock.restore());
 
-const nockBack = require('nock').back;
-nockBack.fixtures = __dirname + '/__fixtures__/';
+nock.back.fixtures = __dirname + '/__fixtures__/';
 if (process.env.CI) {
   console.info('Running in CI - locking down nockBack fixtures');
-  nockBack.setMode('lockdown');
+  nock.back.setMode('lockdown');
 } else {
   console.info('process.env.CI is not set - running nockBack in record mode');
-  nockBack.setMode('record');
+  nock.back.setMode('record');
 }
 
-describe('Telegram Webhook', () => {
-  const msgReply = async (text) => {
-    const req = { body: { update_id: 1, message: { text, chat: { id: 2 } } } };
-    const res = await telegramWebhook(ctx, req);
-    return res?.body;
-  };
-  const msgReplyText = async (text) => (await msgReply(text))?.text;
+const msgReply = async (text) => {
+  const req = { body: { update_id: 1, message: { text, chat: { id: 2 } } } };
+  const res = await telegramWebhook(ctx, req);
+  return res?.body;
+};
 
+const msgReplyText = async (text) => (await msgReply(text))?.text;
+
+const testWithMock = async (command, args) => {
+  expect.assertions(1);
+  const text = [command, ...args].join(' ');
+  const { nockDone } = await nock.back(`${filenamify(text)}.json`);
+  await expect(msgReply(text)).resolves.toMatchSnapshot();
+  nockDone();
+};
+
+describe('Telegram Webhook', () => {
   it('ignores everything except known commands', async () => {
     expect(await msgReplyText('/foo')).toBeUndefined();
     expect(await msgReplyText('bar')).toBeUndefined();
@@ -36,50 +44,41 @@ describe('Telegram Webhook', () => {
     );
   });
 
-  it('handles API errors', async () => {
-    nock(API_URL).get('/coins/markets').query(true).replyWithError('oh no!');
-    expect(await msgReplyText('/price')).toContain('Error: oh no!');
+  describe('/price', () => {
+    for (const [desc, ...args] of [
+      ['defaults to btc in usd'],
+      ['supports other currencies', 'ethereum', 'eur'],
+      ['finds coins by symbol', 'ETH', 'GBP'],
+      ['finds coins by name', 'PEAKDEFI'],
+      ['finds coins by id partial match', 'bitm'],
+      ['finds coins by symbol partial match', 'algoha'],
+      ['finds coins by name partial match', 'peakd'],
+      ['finds vs by coin id', 'doge', 'bitcoin'],
+      ['returns an error for invalid coin', 'asdfasdf', 'eur'],
+      ['returns an error for invalid vs currency', 'bitcoin', 'asdasd'],
+    ]) {
+      it(`(${args.join(', ')}) - ${desc}`, () => testWithMock('/price', args));
+    }
   });
 
-  describe('/price', () => {
-    const testWithMock = async (text, id, vs = 'usd') => {
-      const { nockDone } = await nockBack(`${id}_${vs}.json`);
-      await expect(msgReply(text)).resolves.toMatchSnapshot();
-      nockDone();
-    };
-
-    it('defaults to btc in usd', async () => {
-      expect.assertions(1);
-      return testWithMock('/price', 'bitcoin', 'usd');
-    });
-    it('supports other currencies', async () => {
-      expect.assertions(1);
-      return testWithMock('/price ethereum eur', 'ethereum', 'eur');
-    });
-    it('finds coins by symbol', async () => {
-      expect.assertions(1);
-      return testWithMock('/price ETH GBP', 'ethereum', 'gbp');
-    });
-    it('finds coins by name', async () => {
-      expect.assertions(1);
-      return testWithMock('/price PEAKDEFI', 'marketpeak');
-    });
-    it('finds coins by id partial match', () => {
-      expect.assertions(1);
-      return testWithMock('/price bitm', 'bitmoney');
-    });
-    it('finds coins by symbol partial match', async () => {
-      expect.assertions(1);
-      return testWithMock('/price algoha', '0-5x-long-algorand-token');
-    });
-    it('finds coins by name partial match', async () => {
-      expect.assertions(1);
-      return testWithMock('/price peakd', 'marketpeak');
-    });
-    it("returns a default message for coins which don't exist", async () => {
-      expect(await msgReplyText('/price asdfasdf eur')).toEqual(
-        "Sorry, I couldn't find asdfasdf. Try using the full name",
-      );
-    });
+  describe('/convert', () => {
+    for (const [desc, ...args] of [
+      ['defaults to 1 btc in usd'],
+      ['supports other currencies', 1000, 'ethereum', 'aud'],
+      ['supports coin to coin', 100, 'doge', 'ark'],
+      ['returns an error for invalid amount', 'foo'],
+      ['returns an error for invalid coin', 100, 'asdfasdf'],
+      ['returns an error for invalid vs', 100, 'eth', 'asdfasdf'],
+      // ['finds coins by symbol', 'ETH', 'GBP'],
+      // ['finds coins by name', 'PEAKDEFI'],
+      // ['finds coins by id partial match', 'bitm'],
+      // ['finds coins by symbol partial match', 'algoha'],
+      // ['finds coins by name partial match', 'peakd'],
+      // ['returns an error for invalid coin', 'asdfasdf', 'eur'],
+      // ['returns an error for invalid vs currency', 'bitcoin', 'asdasd'],
+    ]) {
+      it(`(${args.join(', ')}) - ${desc}`, () =>
+        testWithMock('/convert', args));
+    }
   });
 });

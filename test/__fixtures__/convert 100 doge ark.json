@@ -1,0 +1,62 @@
+[
+  {
+    "scope": "https://api.coingecko.com:443",
+    "method": "GET",
+    "path": "/api/v3/simple/price?ids=dogecoin%2Cark&vs_currencies=usd",
+    "body": "",
+    "status": 200,
+    "response": {
+      "ark": {
+        "usd": 0.422251
+      },
+      "dogecoin": {
+        "usd": 0.0101813
+      }
+    },
+    "rawHeaders": [
+      "Date",
+      "Thu, 07 Jan 2021 14:29:29 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Set-Cookie",
+      "__cfduid=d35cd3352944f12a802ff5c289d127e201610029769; expires=Sat, 06-Feb-21 14:29:29 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "Cache-Control",
+      "max-age=60, public, must-revalidate, s-maxage=60",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "POST, PUT, DELETE, GET, OPTIONS",
+      "Access-Control-Request-Method",
+      "*",
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Expose-Headers",
+      "link, per-page, total",
+      "Vary",
+      "Accept-Encoding, Origin",
+      "ETag",
+      "W/\"9242726b08462aae7a155034fa022091\"",
+      "X-Request-Id",
+      "2f61a227-f514-4fcf-bd28-c53624ac4da8",
+      "X-Runtime",
+      "0.009853",
+      "Alternate-Protocol",
+      "443:npn-spdy/2",
+      "CF-Cache-Status",
+      "EXPIRED",
+      "cf-request-id",
+      "077ed9ba2a000005bbacb48000000001",
+      "Expect-CT",
+      "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "60de5f09db6105bb-FRA"
+    ],
+    "responseIsBinary": false
+  }
+]
