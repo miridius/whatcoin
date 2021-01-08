@@ -15,19 +15,24 @@ if (process.env.CI) {
   nock.back.setMode('record');
 }
 
-const msgReply = async (text) => {
-  const req = { body: { update_id: 1, message: { text, chat: { id: 2 } } } };
+const msgReply = async (text, locale) => {
+  const req = {
+    body: {
+      update_id: 1,
+      message: { text, from: { language_code: locale }, chat: { id: 2 } },
+    },
+  };
   const res = await telegramWebhook(ctx, req);
   return res?.body;
 };
 
 const msgReplyText = async (text) => (await msgReply(text))?.text;
 
-const testWithMock = async (command, args) => {
+const testWithMock = async (command, args, locale) => {
   expect.assertions(1);
   const text = [command, ...args].join(' ');
   const { nockDone } = await nock.back(`${filenamify(text)}.json`);
-  await expect(msgReply(text)).resolves.toMatchSnapshot();
+  await expect(msgReply(text, locale)).resolves.toMatchSnapshot();
   nockDone();
 };
 
@@ -62,23 +67,20 @@ describe('Telegram Webhook', () => {
   });
 
   describe('/convert', () => {
-    for (const [desc, ...args] of [
+    for (const [desc, args = [], locale] of [
       ['defaults to 1 btc in usd'],
-      ['supports other currencies', 1000, 'ethereum', 'aud'],
-      ['supports coin to coin', 100, 'doge', 'ark'],
-      ['returns an error for invalid amount', 'foo'],
-      ['returns an error for invalid coin', 100, 'asdfasdf'],
-      ['returns an error for invalid vs', 100, 'eth', 'asdfasdf'],
-      // ['finds coins by symbol', 'ETH', 'GBP'],
-      // ['finds coins by name', 'PEAKDEFI'],
-      // ['finds coins by id partial match', 'bitm'],
-      // ['finds coins by symbol partial match', 'algoha'],
-      // ['finds coins by name partial match', 'peakd'],
-      // ['returns an error for invalid coin', 'asdfasdf', 'eur'],
-      // ['returns an error for invalid vs currency', 'bitcoin', 'asdasd'],
+      ['supports other currencies', [1000, 'ethereum', 'aud']],
+      ['supports coin to coin', [100, 'doge', 'ark']],
+      ['returns an error for invalid amount', ['foo']],
+      ['returns an error for invalid coin', [100, 'asdfasdf']],
+      ['returns an error for invalid vs', [100, 'eth', 'asdfasdf']],
+      ['ignores commas in en locale', ['400,000.00', 'doge', 'eur']],
+      ['understands de locale', ['400.000,00', 'doge', 'eur'], 'de'],
+      ['ignores xx locale', ['400,000.00', 'doge', 'eur'], 'xx'],
+      ['ignores empty locale', ['400,000.00', 'doge', 'eur'], ''],
     ]) {
       it(`(${args.join(', ')}) - ${desc}`, () =>
-        testWithMock('/convert', args));
+        testWithMock('/convert', args, locale));
     }
   });
 });

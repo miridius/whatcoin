@@ -32,11 +32,43 @@ Object {
 }
 `;
 
+exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores commas in en locale 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "400,000 DOGE = €3,205.8",
+}
+`;
+
+exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores empty locale 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "400,000 DOGE = €3,205.8",
+}
+`;
+
+exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores xx locale 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "400,000 DOGE = €3,205.8",
+}
+`;
+
+exports[`Telegram Webhook /convert (400.000,00, doge, eur) - understands de locale 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "400.000 DOGE = 3.205,8 €",
+}
+`;
+
 exports[`Telegram Webhook /convert (1000, ethereum, aud) - supports other currencies 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "1000 ETH = A$1,583,300",
+  "text": "1,000 ETH = A$1,583,300",
 }
 `;
 

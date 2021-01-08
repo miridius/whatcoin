@@ -71,28 +71,27 @@ const getVs = async (vs_currency) => {
   if (symbol && (await getVsCurrencies()).has(symbol)) return symbol;
 };
 
-const formatNumber = (num, currency, sigFig = 6) =>
+const fmt = (num, currency, sigFig = 6) =>
   new Intl.NumberFormat(locale, {
     ...(currency && { style: 'currency', currency, minimumFractionDigits: 0 }),
     ...(num < 10 ** sigFig
       ? { maximumSignificantDigits: sigFig }
       : { maximumFractionDigits: 0 }),
   }).format(num);
-const formatPercent = (num) =>
-  num == undefined ? '?' : formatNumber(num, undefined, 3) + '%';
+const fmtPct = (num) => (num == undefined ? '?' : fmt(num, undefined, 3) + '%');
 
 const formatPriceData = (data, vs) => {
-  const pctH = formatPercent(data.price_change_percentage_1h_in_currency);
-  const pctD = formatPercent(data.price_change_percentage_24h_in_currency);
-  const pctW = formatPercent(data.price_change_percentage_7d_in_currency);
-  const pctM = formatPercent(data.price_change_percentage_30d_in_currency);
+  const pctH = fmtPct(data.price_change_percentage_1h_in_currency);
+  const pctD = fmtPct(data.price_change_percentage_24h_in_currency);
+  const pctW = fmtPct(data.price_change_percentage_7d_in_currency);
+  const pctM = fmtPct(data.price_change_percentage_30d_in_currency);
   return {
     parse_mode: 'markdown',
     text: `*${data.name} (${data.symbol.toUpperCase()})* in ${vs.toUpperCase()}
-Current price:  \`${formatNumber(data.current_price, vs)}\`
+Current price:  \`${fmt(data.current_price, vs)}\`
 h/d/w/m: \`${pctH}\` / \`${pctD}\` / \`${pctW}\` / \`${pctM}\` 
-Market cap:  \`${formatNumber(data.market_cap, vs)}\`
-24h volume:  \`${formatNumber(data.total_volume, vs)}\`
+Market cap:  \`${fmt(data.market_cap, vs)}\`
+24h volume:  \`${fmt(data.total_volume, vs)}\`
 _(updated ${new Date(data.last_updated).toUTCString()})_`,
   };
 };
@@ -117,8 +116,22 @@ const getPrice = async (currency = 'bitcoin', vs_currency = 'usd') => {
   return res?.data?.[0] && formatPriceData(res?.data?.[0], vs);
 };
 
+const parseIntlNumber = (numString) => {
+  if (typeof numString !== 'string') return numString;
+  debug('parsing:', numString, 'using locale:', locale);
+  const decimal = new Intl.NumberFormat(locale).formatToParts(1.1)?.[1]?.value;
+  const num = parseFloat(
+    numString
+      .split(decimal)
+      .map((s) => s.replace(/\D/g, ''))
+      .join('.'),
+  );
+  debug('result:', num);
+  return parseFloat(num);
+};
+
 const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
-  const amt = parseFloat(amount);
+  const amt = parseIntlNumber(amount);
   if (isNaN(amt)) return `Amount '${amount}' is not a valid number`;
   const [{ id, symbol } = {}, vs] = await Promise.all([
     getCoin(from),
@@ -131,7 +144,7 @@ const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
     debug('res:', res);
     const price = res?.data?.[id]?.[vs];
     if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
-    return `${amt} ${symbol.toUpperCase()} = ${formatNumber(amt * price, vs)}`;
+    return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(amt * price, vs)}`;
   } else {
     const { id: to_id, symbol: to_symbol } = (await getCoin(to)) || {};
     if (!to_id) return `Sorry, I couldn't find ${to}. Try using the full name`;
@@ -145,14 +158,14 @@ const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
     if (!price) return `Sorry, I couldn't look up the price for ${id}`;
     const to_price = res?.data?.[to_id]?.usd;
     if (!to_price) return `Sorry, I couldn't look up the price for ${to_id}`;
-    return `${amt} ${symbol.toUpperCase()} = ${formatNumber(
+    return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(
       (amt * price) / to_price,
     )} ${to_symbol.toUpperCase()}`;
   }
 };
 
 module.exports = createAzureTelegramWebhook(
-  async ({ text, from: { language_code } = {} }, _log) => {
+  async ({ text, from: { language_code } }, _log) => {
     // set global loggers & lang so we don't need to pass them to every function
     ({ verbose: debug, info, warn } = _log);
     locale = language_code || 'en';
