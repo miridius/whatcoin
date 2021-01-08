@@ -1,0 +1,61 @@
+[
+  {
+    "scope": "https://api.coingecko.com:443",
+    "method": "GET",
+    "path": "/api/v3/simple/price?ids=ripple&vs_currencies=usd",
+    "body": "",
+    "status": 200,
+    "response": {
+      "ripple": {
+        "usd": 0.321158
+      }
+    },
+    "rawHeaders": [
+      "Date",
+      "Fri, 08 Jan 2021 13:44:47 GMT",
+      "Content-Type",
+      "application/json; charset=utf-8",
+      "Transfer-Encoding",
+      "chunked",
+      "Connection",
+      "close",
+      "Set-Cookie",
+      "__cfduid=dad7e6ca7f7d749f49b5f2277f31c9ee81610113487; expires=Sun, 07-Feb-21 13:44:47 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "Cache-Control",
+      "max-age=60, public, must-revalidate, s-maxage=60",
+      "Access-Control-Allow-Origin",
+      "*",
+      "Access-Control-Allow-Methods",
+      "POST, PUT, DELETE, GET, OPTIONS",
+      "Access-Control-Request-Method",
+      "*",
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+      "Access-Control-Expose-Headers",
+      "link, per-page, total",
+      "Vary",
+      "Accept-Encoding, Origin",
+      "ETag",
+      "W/\"d174f15991f55357b0a01e4f2f274ac6\"",
+      "X-Request-Id",
+      "32ee498b-65b7-41b8-b217-05d4c4681239",
+      "X-Runtime",
+      "0.004938",
+      "Alternate-Protocol",
+      "443:npn-spdy/2",
+      "CF-Cache-Status",
+      "HIT",
+      "Age",
+      "36",
+      "cf-request-id",
+      "0783d72b49000007427f0a7000000001",
+      "Expect-CT",
+      "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+      "Server",
+      "cloudflare",
+      "CF-RAY",
+      "60e65af20e990742-FRA"
+    ],
+    "responseIsBinary": false
+  }
+]

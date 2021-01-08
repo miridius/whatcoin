@@ -165,22 +165,24 @@ const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
 };
 
 const regret = async (
-  amount = 1,
-  currency = 'bitcoin',
-  price = 100,
-  in_currency = 'USD',
+  inputAmt = 1,
+  inputCoin = 'bitcoin',
+  inputSoldFor = 100,
+  inputVs = 'USD',
 ) => {
-  const amt = parseIntlNumber(amount);
-  if (isNaN(amt)) return `Amount '${amount}' is not a valid number`;
-  const soldAt = parseIntlNumber(price);
-  if (isNaN(soldAt)) return `Sell price '${price}' is not a valid number`;
+  const amt = parseIntlNumber(inputAmt);
+  if (isNaN(amt)) return `Amount '${inputAmt}' is not a valid number`;
+  const soldFor = parseIntlNumber(inputSoldFor);
+  if (isNaN(soldFor))
+    return `Sell price '${inputSoldFor}' is not a valid number`;
   const [{ id, symbol } = {}, vs] = await Promise.all([
-    getCoin(currency),
-    getVs(in_currency),
+    getCoin(inputCoin),
+    getVs(inputVs),
   ]);
-  if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
+  if (!id)
+    return `Sorry, I couldn't find ${inputCoin}. Try using the full name`;
   if (!vs)
-    return `Sorry, I can't get prices in ${in_currency}. Supported base currencies are: ${[
+    return `Sorry, I can't get prices in ${inputVs}. Supported base currencies are: ${[
       ...(await getVsCurrencies()),
     ].join(', ')}`;
   debug(`getting simple price for ${id} in ${vs}...`);
@@ -188,11 +190,17 @@ const regret = async (
   debug('res:', res);
   const current = res?.data?.[id]?.[vs];
   if (!current) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
-  const missedProfit = current - soldAt;
-  return `If you hadn't sold your ${fmt(amt)} ${symbol.toUpperCase()} for ${fmt(
-    soldAt,
-    in_currency,
-  )}, you'd be ${fmt(missedProfit, in_currency)} richer now`;
+  const missedProfit = current * amt - soldFor;
+  const sym = symbol.toUpperCase();
+  return missedProfit > 0
+    ? `If you hadn't sold your ${fmt(amt)} ${sym} for ${fmt(
+        soldFor,
+        vs,
+      )}, you'd be ${fmt(missedProfit, vs)} richer now 🚀!`
+    : `Wow, No Ragerts 💥! Your ${fmt(amt)} ${sym} would be worth ${fmt(
+        -missedProfit,
+        vs,
+      )} less today than the ${fmt(soldFor, vs)} you sold it for!`;
 };
 
 module.exports = createAzureTelegramWebhook(

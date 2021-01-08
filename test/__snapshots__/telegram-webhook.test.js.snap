@@ -212,15 +212,63 @@ exports[`Telegram Webhook /regret () - defaults to 1 btc sold at $100 usd 1`] = 
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "If you hadn't sold your 1 BTC for $100, you'd be $41,218 richer now",
+  "text": "If you hadn't sold your 1 BTC for $100, you'd be $41,218 richer now 🚀!",
 }
 `;
 
-exports[`Telegram Webhook /regret (0.5, eth, A$500, aud) - supports other currencies 1`] = `
+exports[`Telegram Webhook /regret (0.5, eth, 500, aud) - supports other currencies 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$1,107.16 richer now",
+  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$301.27 richer now 🚀!",
+}
+`;
+
+exports[`Telegram Webhook /regret (1, asdfasdf) - returns an error for invalid coin 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+}
+`;
+
+exports[`Telegram Webhook /regret (1, btc, 100, asdfasdf) - returns an error for invalid vs 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sorry, I can't get prices in asdfasdf. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau",
+}
+`;
+
+exports[`Telegram Webhook /regret (1, btc, foo) - returns an error for invalid soldAt 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Sell price 'foo' is not a valid number",
+}
+`;
+
+exports[`Telegram Webhook /regret (1000, xrp, 1000) - congratulates no ragerts 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Wow, No Ragerts 💥! Your 1,000 XRP would be worth $678.842 less today than the $1,000 you sold it for!",
+}
+`;
+
+exports[`Telegram Webhook /regret (10000, BTC, $30) - correctly calculates pizza regrets 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "If you hadn't sold your 10,000 BTC for $30, you'd be $413,529,970 richer now 🚀!",
+}
+`;
+
+exports[`Telegram Webhook /regret (foo) - returns an error for invalid amount 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Amount 'foo' is not a valid number",
 }
 `;
 
