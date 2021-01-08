@@ -27,7 +27,7 @@ Notes:
 ```
 price - <coin/symbol=bitcoin> <in=USD>
 convert - <amount=1> <from=BTC> <to=USD>
-regret - <amt=1> <coin=btc> <at=100> <in=USD>
+regret - <amt> <coin> <soldFor> <in=USD>
 ```
 
 ## Local development

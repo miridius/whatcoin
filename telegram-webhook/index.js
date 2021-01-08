@@ -165,9 +165,9 @@ const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
 };
 
 const regret = async (
-  inputAmt = 1,
+  inputAmt = 10000,
   inputCoin = 'bitcoin',
-  inputSoldFor = 100,
+  inputSoldFor = 41,
   inputVs = 'USD',
 ) => {
   const amt = parseIntlNumber(inputAmt);

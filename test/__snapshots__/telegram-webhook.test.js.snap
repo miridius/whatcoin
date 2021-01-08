@@ -208,11 +208,11 @@ _(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /regret () - defaults to 1 btc sold at $100 usd 1`] = `
+exports[`Telegram Webhook /regret () - defaults to 10,000 btc sold at $41 usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "If you hadn't sold your 1 BTC for $100, you'd be $41,218 richer now 🚀! ... fuck!",
+  "text": "If you hadn't sold your 10,000 BTC for $41, you'd be $413,179,959 richer now 🚀! ... fuck!",
 }
 `;
 
@@ -253,14 +253,6 @@ Object {
   "chat_id": 2,
   "method": "sendMessage",
   "text": "Wow, No Ragerts 💥! Your 1,000 XRP would be worth $678.842 less today than the $1,000 you sold it for!",
-}
-`;
-
-exports[`Telegram Webhook /regret (10000, BTC, $30) - correctly calculates pizza regrets 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "If you hadn't sold your 10,000 BTC for $30, you'd be $413,529,970 richer now 🚀! ... fuck!",
 }
 `;
 

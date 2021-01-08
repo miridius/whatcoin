@@ -84,9 +84,8 @@ describe('Telegram Webhook', () => {
 
   describe('/regret', () => {
     for (const [desc, args = [], locale] of [
-      ['defaults to 1 btc sold at $100 usd'],
+      ['defaults to 10,000 btc sold at $41 usd'],
       ['supports other currencies', [0.5, 'eth', 500, 'aud']],
-      ['correctly calculates pizza regrets', ['10000', 'BTC', '$30']],
       ['congratulates no ragerts', [1000, 'xrp', 1000]],
       ['returns an error for invalid amount', ['foo']],
       ['returns an error for invalid coin', [1, 'asdfasdf']],
