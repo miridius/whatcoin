@@ -207,3 +207,21 @@ Market cap:  \`$24,090,107\`
 _(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
 }
 `;
+
+exports[`Telegram Webhook /regret () - defaults to 1 btc sold at $100 usd 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "If you hadn't sold your 1 BTC for $100, you'd be $41,218 richer now",
+}
+`;
+
+exports[`Telegram Webhook /regret (0.5, eth, A$500, aud) - supports other currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$1,107.16 richer now",
+}
+`;
+
+exports[`Telegram Webhook shows a welcome message with /start 1`] = `"Hi there! To get started try typing /price"`;

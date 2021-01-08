@@ -96,14 +96,14 @@ _(updated ${new Date(data.last_updated).toUTCString()})_`,
   };
 };
 
-const getPrice = async (currency = 'bitcoin', vs_currency = 'usd') => {
+const getPrice = async (currency = 'bitcoin', in_currency = 'usd') => {
   const [{ id } = {}, vs] = await Promise.all([
     getCoin(currency),
-    getVs(vs_currency),
+    getVs(in_currency),
   ]);
   if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
   if (!vs)
-    return `Sorry, I can't list prices in ${vs_currency}. Supported base currencies are: ${[
+    return `Sorry, I can't list prices in ${in_currency}. Supported base currencies are: ${[
       ...(await getVsCurrencies()),
     ].join(', ')}`;
   debug(`getting market info for ${id} in ${vs}...`);
@@ -164,6 +164,37 @@ const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
   }
 };
 
+const regret = async (
+  amount = 1,
+  currency = 'bitcoin',
+  price = 100,
+  in_currency = 'USD',
+) => {
+  const amt = parseIntlNumber(amount);
+  if (isNaN(amt)) return `Amount '${amount}' is not a valid number`;
+  const soldAt = parseIntlNumber(price);
+  if (isNaN(soldAt)) return `Sell price '${price}' is not a valid number`;
+  const [{ id, symbol } = {}, vs] = await Promise.all([
+    getCoin(currency),
+    getVs(in_currency),
+  ]);
+  if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
+  if (!vs)
+    return `Sorry, I can't get prices in ${in_currency}. Supported base currencies are: ${[
+      ...(await getVsCurrencies()),
+    ].join(', ')}`;
+  debug(`getting simple price for ${id} in ${vs}...`);
+  const res = await api.simple.price({ ids: id, vs_currencies: vs });
+  debug('res:', res);
+  const current = res?.data?.[id]?.[vs];
+  if (!current) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
+  const missedProfit = current - soldAt;
+  return `If you hadn't sold your ${fmt(amt)} ${symbol.toUpperCase()} for ${fmt(
+    soldAt,
+    in_currency,
+  )}, you'd be ${fmt(missedProfit, in_currency)} richer now`;
+};
+
 module.exports = createAzureTelegramWebhook(
   async ({ text, from: { language_code } }, _log) => {
     // set global loggers & lang so we don't need to pass them to every function
@@ -174,15 +205,19 @@ module.exports = createAzureTelegramWebhook(
     // parse the message into command + args
     const [cmd, ...args] = text.split(/\s+/);
     debug({ cmd, args });
-    // route the command to the appropriate handler
-    switch (cmd) {
+    // route the command to the appropriate handler & remove @mention if present
+    switch (cmd.split('@')[0]) {
       case '/start':
-      case '/usage':
-        return 'usage: /price <crypto name or symbol> [<base currency symbol>]';
+        return 'Hi there! To get started try typing /price';
       case '/price':
         return getPrice(...args);
       case '/convert':
         return convert(...args);
+      case '/regret':
+      case '/regrets':
+      case '/ragert':
+      case '/ragerts':
+        return regret(...args);
       default:
         warn(`Unknown command: ${cmd}`);
         return;

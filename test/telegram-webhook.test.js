@@ -43,10 +43,8 @@ describe('Telegram Webhook', () => {
     expect(await msgReplyText()).toBeUndefined();
   });
 
-  it('shows usage with /start', async () => {
-    expect(await msgReplyText('/start')).toEqual(
-      'usage: /price <crypto name or symbol> [<base currency symbol>]',
-    );
+  it('shows a welcome message with /start', async () => {
+    expect(await msgReplyText('/start')).toMatchSnapshot();
   });
 
   describe('/price', () => {
@@ -81,6 +79,16 @@ describe('Telegram Webhook', () => {
     ]) {
       it(`(${args.join(', ')}) - ${desc}`, () =>
         testWithMock('/convert', args, locale));
+    }
+  });
+
+  describe('/regret', () => {
+    for (const [desc, args = [], locale] of [
+      ['defaults to 1 btc sold at $100 usd'],
+      ['supports other currencies', [0.5, 'eth', 'A$500', 'aud']],
+    ]) {
+      it(`(${args.join(', ')}) - ${desc}`, () =>
+        testWithMock('/regret', args, locale));
     }
   });
 });
