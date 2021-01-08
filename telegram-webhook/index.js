@@ -196,7 +196,9 @@ const regret = async (
     ? `If you hadn't sold your ${fmt(amt)} ${sym} for ${fmt(
         soldFor,
         vs,
-      )}, you'd be ${fmt(missedProfit, vs)} richer now 🚀!`
+      )}, you'd be ${fmt(missedProfit, vs)} richer now 🚀!${
+        missedProfit > soldFor ? ' ... fuck!' : ''
+      }`
     : `Wow, No Ragerts 💥! Your ${fmt(amt)} ${sym} would be worth ${fmt(
         -missedProfit,
         vs,
