@@ -6,10 +6,30 @@ It runs on Azure Functions using the [serverless-telegram](https://github.com/mi
 
 ## Bot Usage
 
-Available commands:
+Notes:
 
-- `/price <crypto name or symbol> [<base currency symbol>]`
-- `/convert <amount> <from name or symbol> <to name or symbol>`
+- Coins can be input as name, symbol, or a prefix thereof. Currencies must be a symbol
+- Commands and arguments are not case sensitive.
+- The user's locale is respected when it comes to number formatting.
+
+### Implemented Commands / TO DOs
+
+- [x] `/price` - get current price info about a currency, with optional conversion. E.g. `/price bitcoin eur`
+- [x] `/convert` - convert an amount of one currency into another, e.g. `/convert 100 ark eth`.
+- [ ] `/regret` - show how much money you missed out on cos you sold too early - e.g `/regret 10000 BTC 41 USD`
+- [ ] `/top10` - get the top 10 currencies by market cap, with optional conversion (symbol). E.g. `/top10 gbp`
+- [ ] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
+- [ ] `/markets` - show a list of markets (exchanges) where a currency can be traded. E.g. `/markets ark`
+
+### Command Info (to send to BotFather):
+
+```
+price - <coin/symbol=bitcoin> <in=USD>
+convert - <amount=1> <from=BTC> <to=USD>
+
+price - [<coin/symbol>=bitcoin] [<in>=USD]
+convert - [<amount>=1] [<from>=BTC] [<to>=USD]
+```
 
 ## Local development
 
