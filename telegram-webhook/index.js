@@ -6,34 +6,28 @@ const DAVO_CHAT_ID = 60764253;
 
 let locale, debug, info, warn;
 
-let _coinsList;
-let _gettingCoinsList = false;
-const getCoinsList = async () => {
-  while (_gettingCoinsList) await new Promise((r) => setTimeout(r, 10));
-  if (!_coinsList) {
-    info('fetching coins list...');
-    _gettingCoinsList = true;
-    _coinsList = (await api.coins.list())?.data?.map((coin) => {
-      coin.id = coin.id?.toLowerCase();
-      coin.symbol = coin.symbol?.toLowerCase();
-      coin.name = coin.name?.toLowerCase();
-      return coin;
-    });
-    _gettingCoinsList = false;
-    info('got', _coinsList?.length, 'coins');
-  }
-  return _coinsList;
+const memoize = (fn) => {
+  const cache = {};
+  return (...args) => (cache[args] = cache[args] ?? fn(...args));
 };
 
-let _vsCurrencies;
-const getVsCurrencies = async () => {
-  if (!_vsCurrencies?.size) {
-    info('fetching supported vs currencies...');
-    _vsCurrencies = new Set((await api.simple.supportedVsCurrencies())?.data);
-    info('got', _vsCurrencies?.size, 'vs currencies');
-  }
-  return _vsCurrencies;
-};
+const getCoinsList = memoize(async () => {
+  info('fetching coins list...');
+  const coinsList = (await api.coins.list())?.data?.map((coin) => ({
+    id: coin.id?.toLowerCase(),
+    symbol: coin.symbol?.toLowerCase(),
+    name: coin.name?.toLowerCase(),
+  }));
+  info('got', coinsList?.length, 'coins');
+  return coinsList;
+});
+
+const getVsCurrencies = memoize(async () => {
+  info('fetching supported vs currencies...');
+  const vsCurrs = new Set((await api.simple.supportedVsCurrencies())?.data);
+  info('got', vsCurrs?.size, 'vs currencies');
+  return vsCurrs;
+});
 
 const getCoin = async (searchString) => {
   searchString = searchString.toLowerCase();
@@ -219,6 +213,8 @@ module.exports = createAzureTelegramWebhook(
     switch (cmd.split('@')[0]) {
       case '/start':
         return 'Hi there! To get started try typing /price';
+      case '/version':
+        return `WhatCoinJS v${require('../package.json').version}`;
       case '/price':
         return getPrice(...args);
       case '/convert':

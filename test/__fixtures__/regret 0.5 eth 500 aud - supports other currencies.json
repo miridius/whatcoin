@@ -2,17 +2,17 @@
   {
     "scope": "https://api.coingecko.com:443",
     "method": "GET",
-    "path": "/api/v3/simple/price?ids=dogecoin&vs_currencies=eur",
+    "path": "/api/v3/simple/price?ids=ethereum&vs_currencies=aud",
     "body": "",
     "status": 200,
     "response": {
-      "dogecoin": {
-        "eur": 0.00801451
+      "ethereum": {
+        "aud": 1602.03
       }
     },
     "rawHeaders": [
       "Date",
-      "Fri, 08 Jan 2021 10:51:12 GMT",
+      "Sun, 17 Jan 2021 19:03:45 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Transfer-Encoding",
@@ -20,7 +20,7 @@
       "Connection",
       "close",
       "Set-Cookie",
-      "__cfduid=d2167d1fa404f1ff84fe2522451e7f8a61610103072; expires=Sun, 07-Feb-21 10:51:12 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "__cfduid=d86025ee2756c4c778a4070b587e914391610910225; expires=Tue, 16-Feb-21 19:03:45 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
       "Cache-Control",
       "max-age=60, public, must-revalidate, s-maxage=60",
       "Access-Control-Allow-Origin",
@@ -36,25 +36,25 @@
       "Vary",
       "Accept-Encoding, Origin",
       "ETag",
-      "W/\"45f8deb01a013658ddd285117c60cb4f\"",
+      "W/\"894940bab1391cf95dd05f42cf0631bb\"",
       "X-Request-Id",
-      "ba020179-3eb6-4d89-b161-da8943e7f90d",
+      "824c3539-baa6-4939-b00f-5e99bb87ef45",
       "X-Runtime",
-      "0.002996",
+      "0.006343",
       "Alternate-Protocol",
       "443:npn-spdy/2",
       "CF-Cache-Status",
       "HIT",
       "Age",
-      "0",
+      "1",
       "cf-request-id",
-      "0783383e2400004aa99eb89000000001",
+      "07b3546c68000005f5d1280000000001",
       "Expect-CT",
       "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "60e55ca9dc364aa9-FRA"
+      "6132568d7e2605f5-FRA"
     ],
     "responseIsBinary": false
   }

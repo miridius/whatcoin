@@ -2,17 +2,17 @@
   {
     "scope": "https://api.coingecko.com:443",
     "method": "GET",
-    "path": "/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+    "path": "/api/v3/simple/price?ids=ethereum&vs_currencies=aud",
     "body": "",
     "status": 200,
     "response": {
-      "bitcoin": {
-        "usd": 38549
+      "ethereum": {
+        "aud": 1602.03
       }
     },
     "rawHeaders": [
       "Date",
-      "Thu, 07 Jan 2021 14:29:28 GMT",
+      "Sun, 17 Jan 2021 19:03:44 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Transfer-Encoding",
@@ -20,7 +20,7 @@
       "Connection",
       "close",
       "Set-Cookie",
-      "__cfduid=dd4c33be0e277fee75f9a3f1953e6520f1610029768; expires=Sat, 06-Feb-21 14:29:28 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "__cfduid=db01547ba24aba56ed3d6f742dc23c3521610910224; expires=Tue, 16-Feb-21 19:03:44 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
       "Cache-Control",
       "max-age=60, public, must-revalidate, s-maxage=60",
       "Access-Control-Allow-Origin",
@@ -36,25 +36,23 @@
       "Vary",
       "Accept-Encoding, Origin",
       "ETag",
-      "W/\"67a1f5897f416493a912bc2f29451706\"",
+      "W/\"894940bab1391cf95dd05f42cf0631bb\"",
       "X-Request-Id",
-      "fb1800e0-3cc8-41b3-bf17-db23616dedb6",
+      "824c3539-baa6-4939-b00f-5e99bb87ef45",
       "X-Runtime",
-      "0.008744",
+      "0.006343",
       "Alternate-Protocol",
       "443:npn-spdy/2",
       "CF-Cache-Status",
-      "HIT",
-      "Age",
-      "52",
+      "EXPIRED",
       "cf-request-id",
-      "077ed9b8cb000017760a092000000001",
+      "07b354670a000005ed9da7b000000001",
       "Expect-CT",
       "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "60de5f07ab101776-FRA"
+      "61325684d96c05ed-FRA"
     ],
     "responseIsBinary": false
   }

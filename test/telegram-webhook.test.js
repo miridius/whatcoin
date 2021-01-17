@@ -1,4 +1,4 @@
-/* eslint-disable jest/expect-expect */
+/* eslint-disable jest/valid-title */
 const telegramWebhook = require('../telegram-webhook');
 const ctx = require('./defaultContext');
 const nock = require('nock');
@@ -28,15 +28,18 @@ const msgReply = async (text, locale) => {
 
 const msgReplyText = async (text) => (await msgReply(text))?.text;
 
-const testWithMock = async (command, args, locale) => {
-  expect.assertions(1);
-  const text = [command, ...args].join(' ');
-  const { nockDone } = await nock.back(`${filenamify(text)}.json`);
-  await expect(msgReply(text, locale)).resolves.toMatchSnapshot();
-  nockDone();
-};
+beforeEach(async () => {
+  const state = expect.getState();
+  state.nockBack = await nock.back(`${filenamify(state.currentTestName)}.json`);
+});
 
-describe('Telegram Webhook', () => {
+afterEach(() => {
+  const { nockBack } = expect.getState();
+  nockBack.nockDone();
+  nockBack.context.assertScopesFinished();
+});
+
+describe('webhook', () => {
   it('ignores everything except known commands', async () => {
     expect(await msgReplyText('/foo')).toBeUndefined();
     expect(await msgReplyText('bar')).toBeUndefined();
@@ -46,54 +49,51 @@ describe('Telegram Webhook', () => {
   it('shows a welcome message with /start', async () => {
     expect(await msgReplyText('/start')).toMatchSnapshot();
   });
-
-  describe('/price', () => {
-    for (const [desc, ...args] of [
-      ['defaults to btc in usd'],
-      ['supports other currencies', 'ethereum', 'eur'],
-      ['finds coins by symbol', 'ETH', 'GBP'],
-      ['finds coins by name', 'PEAKDEFI'],
-      ['finds coins by id partial match', 'bitm'],
-      ['finds coins by symbol partial match', 'algoha'],
-      ['finds coins by name partial match', 'peakd'],
-      ['finds vs by coin id', 'doge', 'bitcoin'],
-      ['returns an error for invalid coin', 'asdfasdf', 'eur'],
-      ['returns an error for invalid vs currency', 'bitcoin', 'asdasd'],
-    ]) {
-      it(`(${args.join(', ')}) - ${desc}`, () => testWithMock('/price', args));
-    }
-  });
-
-  describe('/convert', () => {
-    for (const [desc, args = [], locale] of [
-      ['defaults to 1 btc in usd'],
-      ['supports other currencies', [1000, 'ethereum', 'aud']],
-      ['supports coin to coin', [100, 'doge', 'ark']],
-      ['returns an error for invalid amount', ['foo']],
-      ['returns an error for invalid coin', [100, 'asdfasdf']],
-      ['returns an error for invalid vs', [100, 'eth', 'asdfasdf']],
-      ['ignores commas in en locale', ['400,000.00', 'doge', 'eur']],
-      ['understands de locale', ['400.000,00', 'doge', 'eur'], 'de'],
-      ['ignores xx locale', ['400,000.00', 'doge', 'eur'], 'xx'],
-      ['ignores empty locale', ['400,000.00', 'doge', 'eur'], ''],
-    ]) {
-      it(`(${args.join(', ')}) - ${desc}`, () =>
-        testWithMock('/convert', args, locale));
-    }
-  });
-
-  describe('/regret', () => {
-    for (const [desc, args = [], locale] of [
-      ['defaults to 10,000 btc sold at $41 usd'],
-      ['supports other currencies', [0.5, 'eth', 500, 'aud']],
-      ['congratulates no ragerts', [1000, 'xrp', 1000]],
-      ['returns an error for invalid amount', ['foo']],
-      ['returns an error for invalid coin', [1, 'asdfasdf']],
-      ['returns an error for invalid soldAt', [1, 'btc', 'foo']],
-      ['returns an error for invalid vs', [1, 'btc', 100, 'asdfasdf']],
-    ]) {
-      it(`(${args.join(', ')}) - ${desc}`, () =>
-        testWithMock('/regret', args, locale));
-    }
-  });
 });
+
+const commandTests = {
+  '/price': [
+    ['defaults to btc in usd'],
+    ['supports other currencies', 'ethereum eur'],
+    ['finds coins by symbol', 'ETH GBP'],
+    ['finds coins by name', 'PEAKDEFI'],
+    ['finds coins by id partial match', 'bitm'],
+    ['finds coins by symbol partial match', 'algoha'],
+    ['finds coins by name partial match', 'peakd'],
+    ['finds vs by coin id', 'doge bitcoin'],
+    ['returns an error for invalid coin', 'asdfasdf eur'],
+    ['returns an error for invalid vs currency', 'bitcoin asdasd'],
+  ],
+  '/convert': [
+    ['defaults to 1 btc in usd'],
+    ['supports other currencies', '1000 ethereum aud'],
+    ['supports coin to coin', '100 doge ark'],
+    ['returns an error for invalid amount', 'foo'],
+    ['returns an error for invalid coin', '100 asdfasdf'],
+    ['returns an error for invalid vs', '100 eth asdfasdf'],
+    ['ignores commas in en locale', '400,000.00 doge eur'],
+    ['understands de locale', '400.000,00 doge eur', 'de'],
+    ['ignores xx locale', '400,000.00 doge eur', 'xx'],
+    ['ignores empty locale', '400,000.00 doge eur', ''],
+  ],
+  '/regret': [
+    ['defaults to 10,000 btc sold at $41 usd'],
+    ['supports other currencies', '0.5 eth 500 aud'],
+    ['congratulates no ragerts', '1000 xrp 1000'],
+    ['returns an error for invalid amount', 'foo'],
+    ['returns an error for invalid coin', '1 asdfasdf'],
+    ['returns an error for invalid soldAt', '1 btc foo'],
+    ['returns an error for invalid vs', '1 btc 100 asdfasdf'],
+  ],
+};
+
+for (const [command, tests] of Object.entries(commandTests)) {
+  describe(command, () => {
+    for (const [desc, args, locale] of tests) {
+      it(args ? `${args} - ${desc}` : `- ${desc}`, () => {
+        const text = args ? `${command} ${args}` : command;
+        return expect(msgReply(text, locale)).resolves.toMatchSnapshot();
+      });
+    }
+  });
+}

@@ -21,6 +21,7 @@ Notes:
 - [ ] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
 - [ ] `/markets` - show a list of markets (exchanges) where a currency can be traded. E.g. `/markets ark`
 - [ ] `/version` - show bot version (on deploy: send notification/update bot name?)
+- [ ] `/usage` - shows commands & their arguments
 
 ### Command Info (to send to BotFather):
 

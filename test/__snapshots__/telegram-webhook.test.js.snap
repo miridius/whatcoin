@@ -1,30 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Telegram Webhook /convert () - defaults to 1 btc in usd 1`] = `
+exports[`/convert - defaults to 1 btc in usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "1 BTC = $38,549",
+  "text": "1 BTC = $35,807",
 }
 `;
 
-exports[`Telegram Webhook /convert (100, asdfasdf) - returns an error for invalid coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
-}
-`;
-
-exports[`Telegram Webhook /convert (100, doge, ark) - supports coin to coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "100 DOGE = 2.4112 ARK",
-}
-`;
-
-exports[`Telegram Webhook /convert (100, eth, asdfasdf) - returns an error for invalid vs 1`] = `
+exports[`/convert 100 asdfasdf - returns an error for invalid coin 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -32,47 +16,63 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores commas in en locale 1`] = `
+exports[`/convert 100 doge ark - supports coin to coin 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "400,000 DOGE = €3,205.8",
+  "text": "100 DOGE = 2.26598 ARK",
 }
 `;
 
-exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores empty locale 1`] = `
+exports[`/convert 100 eth asdfasdf - returns an error for invalid vs 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "400,000 DOGE = €3,205.8",
+  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
 }
 `;
 
-exports[`Telegram Webhook /convert (400,000.00, doge, eur) - ignores xx locale 1`] = `
+exports[`/convert 400,000.00 doge eur - ignores commas in en locale 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "400,000 DOGE = €3,205.8",
+  "text": "400,000 DOGE = €3,028.83",
 }
 `;
 
-exports[`Telegram Webhook /convert (400.000,00, doge, eur) - understands de locale 1`] = `
+exports[`/convert 400,000.00 doge eur - ignores empty locale 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "400.000 DOGE = 3.205,8 €",
+  "text": "400,000 DOGE = €3,028.83",
 }
 `;
 
-exports[`Telegram Webhook /convert (1000, ethereum, aud) - supports other currencies 1`] = `
+exports[`/convert 400,000.00 doge eur - ignores xx locale 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "1,000 ETH = A$1,583,300",
+  "text": "400,000 DOGE = €3,028.83",
 }
 `;
 
-exports[`Telegram Webhook /convert (foo) - returns an error for invalid amount 1`] = `
+exports[`/convert 400.000,00 doge eur - understands de locale 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "400.000 DOGE = 3.028,83 €",
+}
+`;
+
+exports[`/convert 1000 ethereum aud - supports other currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "1,000 ETH = A$1,602,030",
+}
+`;
+
+exports[`/convert foo - returns an error for invalid amount 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -80,63 +80,63 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook /price () - defaults to btc in usd 1`] = `
+exports[`/price - defaults to btc in usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Bitcoin (BTC)* in USD
-Current price:  \`$38,549\`
-h/d/w/m: \`0.0819%\` / \`11.9%\` / \`33.7%\` / \`101%\` 
-Market cap:  \`$718,577,416,969\`
-24h volume:  \`$73,907,888,421\`
-_(updated Thu, 07 Jan 2021 14:27:08 GMT)_",
+Current price:  \`$35,807\`
+h/d/w/m: \`-0.228%\` / \`-1.9%\` / \`-11.1%\` / \`57%\` 
+Market cap:  \`$663,977,264,729\`
+24h volume:  \`$52,497,360,217\`
+_(updated Sun, 17 Jan 2021 19:02:48 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (ETH, GBP) - finds coins by symbol 1`] = `
+exports[`/price ETH GBP - finds coins by symbol 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in GBP
-Current price:  \`£902.26\`
-h/d/w/m: \`-0.215%\` / \`6.72%\` / \`63.3%\` / \`103%\` 
-Market cap:  \`£103,014,363,730\`
-24h volume:  \`£30,758,456,011\`
-_(updated Thu, 07 Jan 2021 14:28:44 GMT)_",
+Current price:  \`£906.23\`
+h/d/w/m: \`0.166%\` / \`-0.0911%\` / \`-4.18%\` / \`90.9%\` 
+Market cap:  \`£103,307,225,676\`
+24h volume:  \`£26,528,626,731\`
+_(updated Sun, 17 Jan 2021 19:03:27 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (PEAKDEFI) - finds coins by name 1`] = `
+exports[`/price PEAKDEFI - finds coins by name 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*PEAKDEFI (PEAK)* in USD
-Current price:  \`$0.270058\`
-h/d/w/m: \`0.677%\` / \`0.248%\` / \`-1.1%\` / \`4.35%\` 
-Market cap:  \`$24,090,107\`
-24h volume:  \`$404,893\`
-_(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
+Current price:  \`$0.269714\`
+h/d/w/m: \`0.705%\` / \`3.52%\` / \`1.46%\` / \`-14.1%\` 
+Market cap:  \`$24,860,396\`
+24h volume:  \`$183,402\`
+_(updated Sun, 17 Jan 2021 19:00:08 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (algoha) - finds coins by symbol partial match 1`] = `
+exports[`/price algoha - finds coins by symbol partial match 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*0.5X Long Algorand Token (ALGOHALF)* in USD
-Current price:  \`$8,288.27\`
+Current price:  \`$9,857.57\`
 h/d/w/m: \`?\` / \`?\` / \`?\` / \`?\` 
 Market cap:  \`$0\`
-24h volume:  \`$53.96\`
-_(updated Sat, 21 Nov 2020 14:26:40 GMT)_",
+24h volume:  \`$60.03\`
+_(updated Sat, 16 Jan 2021 08:09:16 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (asdfasdf, eur) - returns an error for invalid coin 1`] = `
+exports[`/price asdfasdf eur - returns an error for invalid coin 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -144,87 +144,87 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook /price (bitcoin, asdasd) - returns an error for invalid vs currency 1`] = `
+exports[`/price bitcoin asdasd - returns an error for invalid vs currency 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I can't list prices in asdasd. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau",
+  "text": "Sorry, I can't list prices in asdasd. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau, bits, sats",
 }
 `;
 
-exports[`Telegram Webhook /price (bitm) - finds coins by id partial match 1`] = `
+exports[`/price bitm - finds coins by id partial match 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*BitMoney (BIT)* in USD
-Current price:  \`$0.00003131\`
-h/d/w/m: \`?\` / \`?\` / \`?\` / \`63.1%\` 
-Market cap:  \`$15,947.8\`
-24h volume:  \`$4.37\`
-_(updated Tue, 05 Jan 2021 14:09:21 GMT)_",
+Current price:  \`$0.00003653\`
+h/d/w/m: \`?\` / \`?\` / \`?\` / \`61%\` 
+Market cap:  \`$18,608.9\`
+24h volume:  \`$9.46\`
+_(updated Sat, 16 Jan 2021 03:28:33 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (doge, bitcoin) - finds vs by coin id 1`] = `
+exports[`/price doge bitcoin - finds vs by coin id 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Dogecoin (DOGE)* in BTC
-Current price:  \`BTC 0.0000002643\`
-h/d/w/m: \`-0.419%\` / \`-10.8%\` / \`63.8%\` / \`52.1%\` 
-Market cap:  \`BTC 33,766\`
-24h volume:  \`BTC 13,775\`
-_(updated Thu, 07 Jan 2021 14:27:53 GMT)_",
+Current price:  \`BTC 0.0000002563\`
+h/d/w/m: \`-0.111%\` / \`2.22%\` / \`1.07%\` / \`56.9%\` 
+Market cap:  \`BTC 33,001\`
+24h volume:  \`BTC 9,494\`
+_(updated Sun, 17 Jan 2021 19:00:15 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (ethereum, eur) - supports other currencies 1`] = `
+exports[`/price ethereum eur - supports other currencies 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in EUR
-Current price:  \`€999.21\`
-h/d/w/m: \`-0.291%\` / \`7.25%\` / \`63.2%\` / \`104%\` 
-Market cap:  \`€114,098,707,361\`
-24h volume:  \`€34,063,378,632\`
-_(updated Thu, 07 Jan 2021 14:28:44 GMT)_",
+Current price:  \`€1,019.44\`
+h/d/w/m: \`0.166%\` / \`-0.0911%\` / \`-2.86%\` / \`94.1%\` 
+Market cap:  \`€116,212,697,466\`
+24h volume:  \`€29,842,668,336\`
+_(updated Sun, 17 Jan 2021 19:03:27 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /price (peakd) - finds coins by name partial match 1`] = `
+exports[`/price peakd - finds coins by name partial match 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*PEAKDEFI (PEAK)* in USD
-Current price:  \`$0.270058\`
-h/d/w/m: \`0.677%\` / \`0.248%\` / \`-1.1%\` / \`4.35%\` 
-Market cap:  \`$24,090,107\`
-24h volume:  \`$404,893\`
-_(updated Thu, 07 Jan 2021 14:23:58 GMT)_",
+Current price:  \`$0.269714\`
+h/d/w/m: \`0.705%\` / \`3.52%\` / \`1.46%\` / \`-14.1%\` 
+Market cap:  \`$24,860,396\`
+24h volume:  \`$183,402\`
+_(updated Sun, 17 Jan 2021 19:00:08 GMT)_",
 }
 `;
 
-exports[`Telegram Webhook /regret () - defaults to 10,000 btc sold at $41 usd 1`] = `
+exports[`/regret - defaults to 10,000 btc sold at $41 usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "If you hadn't sold your 10,000 BTC for $41, you'd be $413,179,959 richer now 🚀! ... fuck!",
+  "text": "If you hadn't sold your 10,000 BTC for $41, you'd be $358,069,959 richer now 🚀! ... fuck!",
 }
 `;
 
-exports[`Telegram Webhook /regret (0.5, eth, 500, aud) - supports other currencies 1`] = `
+exports[`/regret 0.5 eth 500 aud - supports other currencies 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$301.27 richer now 🚀!",
+  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$301.015 richer now 🚀!",
 }
 `;
 
-exports[`Telegram Webhook /regret (1, asdfasdf) - returns an error for invalid coin 1`] = `
+exports[`/regret 1 asdfasdf - returns an error for invalid coin 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -232,15 +232,15 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook /regret (1, btc, 100, asdfasdf) - returns an error for invalid vs 1`] = `
+exports[`/regret 1 btc 100 asdfasdf - returns an error for invalid vs 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdfasdf. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau",
+  "text": "Sorry, I can't get prices in asdfasdf. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau, bits, sats",
 }
 `;
 
-exports[`Telegram Webhook /regret (1, btc, foo) - returns an error for invalid soldAt 1`] = `
+exports[`/regret 1 btc foo - returns an error for invalid soldAt 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -248,15 +248,15 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook /regret (1000, xrp, 1000) - congratulates no ragerts 1`] = `
+exports[`/regret 1000 xrp 1000 - congratulates no ragerts 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Wow, No Ragerts 💥! Your 1,000 XRP would be worth $678.842 less today than the $1,000 you sold it for!",
+  "text": "Wow, No Ragerts 💥! Your 1,000 XRP would be worth $722.786 less today than the $1,000 you sold it for!",
 }
 `;
 
-exports[`Telegram Webhook /regret (foo) - returns an error for invalid amount 1`] = `
+exports[`/regret foo - returns an error for invalid amount 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
@@ -264,4 +264,4 @@ Object {
 }
 `;
 
-exports[`Telegram Webhook shows a welcome message with /start 1`] = `"Hi there! To get started try typing /price"`;
+exports[`webhook shows a welcome message with /start 1`] = `"Hi there! To get started try typing /price"`;
