@@ -17,17 +17,21 @@ Notes:
 - [x] `/price` - get current price info about a currency, with optional conversion. E.g. `/price bitcoin eur`
 - [x] `/convert` - convert an amount of one currency into another, e.g. `/convert 100 ark eth`.
 - [x] `/regret` - show how much money you missed out on cos you sold too early - e.g `/regret 10000 BTC 41 USD`
-- [ ] `/top10` - get the top 10 currencies by market cap, with optional conversion (symbol). E.g. `/top10 gbp`
-- [ ] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
+- [x] `/top10` - get the top 10 currencies by market cap, with optional conversion (symbol). E.g. `/top10 gbp`
+- [x] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
 - [ ] `/markets` - show a list of markets (exchanges) where a currency can be traded. E.g. `/markets ark`
 - [ ] `/version` - show bot version (on deploy: send notification/update bot name?)
-- [ ] `/usage` - shows commands & their arguments
+- [ ] `/help` - show commands & their arguments
+- [ ] `/settings` - bot settings (e.g. default vs currency)
+- [ ] Update bot about & description
 
 ### Command Info (to send to BotFather):
 
 ```
 price - <coin/symbol=bitcoin> <in=USD>
 convert - <amount=1> <from=BTC> <to=USD>
+top10 - <in=USD>
+top20 - <in=USD>
 regret - <amt> <coin> <soldFor> <in=USD>
 ```
 

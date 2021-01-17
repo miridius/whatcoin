@@ -85,6 +85,8 @@ const commandTests = {
     ['returns an error for invalid soldAt', '1 btc foo'],
     ['returns an error for invalid vs', '1 btc 100 asdfasdf'],
   ],
+  '/top10': [['defaults to USD'], ['supports other vs currencies', 'aud']],
+  '/top20': [['defaults to USD'], ['supports other vs currencies', 'btc']],
 };
 
 for (const [command, tests] of Object.entries(commandTests)) {

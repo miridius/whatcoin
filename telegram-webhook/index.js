@@ -74,6 +74,8 @@ const fmt = (num, currency, sigFig = 6) =>
   }).format(num);
 const fmtPct = (num) => (num == undefined ? '?' : fmt(num, undefined, 3) + '%');
 
+const fmtDate = (date) => new Date(date).toUTCString();
+
 const formatPriceData = (data, vs) => {
   const pctH = fmtPct(data.price_change_percentage_1h_in_currency);
   const pctD = fmtPct(data.price_change_percentage_24h_in_currency);
@@ -86,7 +88,7 @@ Current price:  \`${fmt(data.current_price, vs)}\`
 h/d/w/m: \`${pctH}\` / \`${pctD}\` / \`${pctW}\` / \`${pctM}\` 
 Market cap:  \`${fmt(data.market_cap, vs)}\`
 24h volume:  \`${fmt(data.total_volume, vs)}\`
-_(updated ${new Date(data.last_updated).toUTCString()})_`,
+_(updated ${fmtDate(data.last_updated)})_`,
   };
 };
 
@@ -199,6 +201,36 @@ const regret = async (
       )} less today than the ${fmt(soldFor, vs)} you sold it for!`;
 };
 
+const top = async (n, inputVs = 'usd') => {
+  const vs = await getVs(inputVs);
+  if (!vs)
+    return `Sorry, I can't list prices in ${inputVs}. Supported base currencies are: ${[
+      ...(await getVsCurrencies()),
+    ].join(', ')}`;
+  const { data } = await api.coins.markets({ vs_currency: vs, per_page: n });
+  debug('data:', data);
+  if (!data?.length)
+    return "Sorry, I couldn't fetch market data from the API. Please try again later.";
+  return {
+    parse_mode: 'markdown',
+    text: [
+      `*Top ${n} Cryptocurrencies*`,
+      ...data.map(
+        ({
+          market_cap_rank: rank,
+          name,
+          current_price: price,
+          price_change_percentage_24h: pct24h,
+          market_cap,
+        }) =>
+          `*${rank}. ${name}:*  ${fmt(price, vs)} (\`${fmtPct(pct24h)}\`)` +
+          (n <= 10 ? ` - Market ${fmt(market_cap, vs)}` : ''),
+      ),
+      `_(updated ${fmtDate(data[0].last_updated)})_`,
+    ].join('\n'),
+  };
+};
+
 module.exports = createAzureTelegramWebhook(
   async ({ text, from: { language_code } }, _log) => {
     // set global loggers & lang so we don't need to pass them to every function
@@ -224,6 +256,10 @@ module.exports = createAzureTelegramWebhook(
       case '/ragert':
       case '/ragerts':
         return regret(...args);
+      case '/top10':
+        return top(10, ...args);
+      case '/top20':
+        return top(20, ...args);
       default:
         warn(`Unknown command: ${cmd}`);
         return;

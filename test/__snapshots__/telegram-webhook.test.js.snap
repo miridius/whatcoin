@@ -264,4 +264,104 @@ Object {
 }
 `;
 
+exports[`/top10 - defaults to USD 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Top 10 Cryptocurrencies*
+*1. Bitcoin:*  $35,650 (\`-1.98%\`) - Market $664,301,629,391
+*2. Ethereum:*  $1,218.65 (\`-2.83%\`) - Market $139,881,356,417
+*3. Tether:*  $1 (\`0.362%\`) - Market $24,377,619,590
+*4. Polkadot:*  $16.78 (\`-6.68%\`) - Market $16,092,898,222
+*5. XRP:*  $0.275464 (\`-2.96%\`) - Market $12,536,881,122
+*6. Cardano:*  $0.371875 (\`5.76%\`) - Market $11,680,221,922
+*7. Litecoin:*  $141.92 (\`-2.64%\`) - Market $9,409,485,025
+*8. Chainlink:*  $22.98 (\`9.31%\`) - Market $9,225,230,224
+*9. Bitcoin Cash:*  $476.66 (\`-3.98%\`) - Market $8,880,194,054
+*10. Binance Coin:*  $45.64 (\`6.39%\`) - Market $6,749,069,643
+_(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
+}
+`;
+
+exports[`/top10 aud - supports other vs currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Top 10 Cryptocurrencies*
+*1. Bitcoin:*  A$46,379 (\`-1.77%\`) - Market A$864,220,547,550
+*2. Ethereum:*  A$1,585.4 (\`-2.63%\`) - Market A$181,978,091,106
+*3. Tether:*  A$1.3 (\`0.575%\`) - Market A$31,713,966,695
+*4. Polkadot:*  A$21.82 (\`-6.49%\`) - Market A$20,935,991,570
+*5. XRP:*  A$0.358364 (\`-2.75%\`) - Market A$16,309,805,348
+*6. Cardano:*  A$0.483789 (\`5.98%\`) - Market A$15,051,881,881
+*7. Litecoin:*  A$184.63 (\`-2.44%\`) - Market A$12,241,231,905
+*8. Chainlink:*  A$29.89 (\`9.55%\`) - Market A$12,001,526,359
+*9. Bitcoin Cash:*  A$620.11 (\`-3.78%\`) - Market A$11,552,652,934
+*10. Binance Coin:*  A$59.37 (\`6.61%\`) - Market A$8,780,175,156
+_(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
+}
+`;
+
+exports[`/top20 - defaults to USD 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Top 20 Cryptocurrencies*
+*1. Bitcoin:*  $35,650 (\`-1.98%\`)
+*2. Ethereum:*  $1,218.65 (\`-2.83%\`)
+*3. Tether:*  $1 (\`0.362%\`)
+*4. Polkadot:*  $16.78 (\`-6.68%\`)
+*5. XRP:*  $0.275464 (\`-2.96%\`)
+*6. Cardano:*  $0.371875 (\`5.76%\`)
+*7. Litecoin:*  $141.92 (\`-2.64%\`)
+*8. Chainlink:*  $22.98 (\`9.31%\`)
+*9. Bitcoin Cash:*  $476.66 (\`-3.98%\`)
+*10. Binance Coin:*  $45.64 (\`6.39%\`)
+*11. Stellar:*  $0.299168 (\`0.746%\`)
+*12. USD Coin:*  $0.998964 (\`-0.256%\`)
+*13. Wrapped Bitcoin:*  $35,605 (\`-2.41%\`)
+*14. Bitcoin SV:*  $198.76 (\`-3.87%\`)
+*15. Monero:*  $156.69 (\`-0.451%\`)
+*16. EOS:*  $2.74 (\`-2.29%\`)
+*17. Aave:*  $194.6 (\`4.9%\`)
+*18. Tezos:*  $2.91 (\`-1.54%\`)
+*19. Synthetix Network Token:*  $15.58 (\`-4.32%\`)
+*20. TRON:*  $0.0300568 (\`-2.08%\`)
+_(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
+}
+`;
+
+exports[`/top20 btc - supports other vs currencies 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "parse_mode": "markdown",
+  "text": "*Top 20 Cryptocurrencies*
+*1. Bitcoin:*  BTC 1 (\`0%\`)
+*2. Ethereum:*  BTC 0.0341977 (\`-0.669%\`)
+*3. Tether:*  BTC 0.00002792 (\`2.25%\`)
+*4. Polkadot:*  BTC 0.00047112 (\`-4.57%\`)
+*5. XRP:*  BTC 0.00000773 (\`-1.01%\`)
+*6. Cardano:*  BTC 0.00001044 (\`7.97%\`)
+*7. Litecoin:*  BTC 0.00398104 (\`-0.727%\`)
+*8. Chainlink:*  BTC 0.00064526 (\`11.6%\`)
+*9. Bitcoin Cash:*  BTC 0.0133864 (\`-1.94%\`)
+*10. Binance Coin:*  BTC 0.00128018 (\`8.72%\`)
+*11. Stellar:*  BTC 0.00000839 (\`2.96%\`)
+*12. USD Coin:*  BTC 0.00002803 (\`2%\`)
+*13. Wrapped Bitcoin:*  BTC 0.999147 (\`-0.202%\`)
+*14. Bitcoin SV:*  BTC 0.00557538 (\`-1.75%\`)
+*15. Monero:*  BTC 0.0043971 (\`1.55%\`)
+*16. EOS:*  BTC 0.00007692 (\`-0.215%\`)
+*17. Aave:*  BTC 0.00546154 (\`7.28%\`)
+*18. Tezos:*  BTC 0.00008176 (\`0.45%\`)
+*19. Synthetix Network Token:*  BTC 0.0004369 (\`-2.22%\`)
+*20. TRON:*  BTC 0.0000008441 (\`0.183%\`)
+_(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
+}
+`;
+
 exports[`webhook shows a welcome message with /start 1`] = `"Hi there! To get started try typing /price"`;
