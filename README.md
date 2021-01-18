@@ -1,4 +1,7 @@
-# WhatcoinJS
+# WhatCoin
+
+[![CI/CD](https://github.com/miridius/whatcoin/workflows/Lint%2C%20Test%2C%20and%20Deploy%20to%20Azure/badge.svg)](https://github.com/miridius/whatcoin/actions?query=workflow%3A%22Lint%2C+Test%2C+and+Deploy+to+Azure%22)
+[![codecov](https://codecov.io/gh/miridius/whatcoin/branch/master/graph/badge.svg?token=G84WXAXK67)](https://codecov.io/gh/miridius/whatcoin)
 
 WhatCoin is a Telegram Bot which gives price and market information about crypto currencies.
 
@@ -20,7 +23,7 @@ Notes:
 - [x] `/top10` - get the top 10 currencies by market cap, with optional conversion (symbol). E.g. `/top10 gbp`
 - [x] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
 - [ ] `/markets` - show a list of markets (exchanges) where a currency can be traded. E.g. `/markets ark`
-- [ ] `/version` - show bot version (on deploy: send notification/update bot name?)
+- [x] `/version` - show bot version (on deploy: send notification/update bot name?)
 - [ ] `/help` - show commands & their arguments
 - [ ] `/settings` - bot settings (e.g. default vs currency)
 - [ ] Update bot about & description

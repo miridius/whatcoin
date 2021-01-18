@@ -36,6 +36,11 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
   deploy:
     name: Deploy to Azure Function App
     if: ${{ github.event_name == 'push' }}
