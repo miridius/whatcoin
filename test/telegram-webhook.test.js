@@ -45,13 +45,11 @@ describe('webhook', () => {
     expect(await msgReplyText('bar')).toBeUndefined();
     expect(await msgReplyText()).toBeUndefined();
   });
-
-  it('shows a welcome message with /start', async () => {
-    expect(await msgReplyText('/start')).toMatchSnapshot();
-  });
 });
 
 const commandTests = {
+  '/start': 'shows a welcome message',
+  '/version': 'shows current version info',
   '/price': [
     ['defaults to btc in usd'],
     ['supports other currencies', 'ethereum eur'],
@@ -89,9 +87,11 @@ const commandTests = {
   '/top20': [['defaults to USD'], ['supports other vs currencies', 'btc']],
 };
 
+const toArray = (t) => (Array.isArray(t) ? t : [t]);
+
 for (const [command, tests] of Object.entries(commandTests)) {
   describe(command, () => {
-    for (const [desc, args, locale] of tests) {
+    for (const [desc, args, locale] of toArray(tests).map(toArray)) {
       it(args ? `${args} - ${desc}` : `- ${desc}`, () => {
         const text = args ? `${command} ${args}` : command;
         return expect(msgReply(text, locale)).resolves.toMatchSnapshot();

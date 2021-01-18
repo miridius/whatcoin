@@ -264,6 +264,14 @@ Object {
 }
 `;
 
+exports[`/start - shows a welcome message 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "Hi there! To get started try typing /price",
+}
+`;
+
 exports[`/top10 - defaults to USD 1`] = `
 Object {
   "chat_id": 2,
@@ -364,4 +372,10 @@ _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 }
 `;
 
-exports[`webhook shows a welcome message with /start 1`] = `"Hi there! To get started try typing /price"`;
+exports[`/version - shows current version info 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "WhatCoin v0.5.0",
+}
+`;

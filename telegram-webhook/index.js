@@ -245,8 +245,10 @@ module.exports = createAzureTelegramWebhook(
     switch (cmd.split('@')[0]) {
       case '/start':
         return 'Hi there! To get started try typing /price';
-      case '/version':
-        return `WhatCoinJS v${require('../package.json').version}`;
+      case '/version': {
+        const { name, version } = require('../package.json');
+        return `${name} v${version}`;
+      }
       case '/price':
         return getPrice(...args);
       case '/convert':

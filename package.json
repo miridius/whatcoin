@@ -1,7 +1,10 @@
 {
-  "name": "whatcoinjs",
+  "name": "WhatCoin",
   "version": "0.5.0",
-  "description": "",
+  "description": "A telegram bot providing cryptocurrency price/market info and calculations",
+  "author": "David D. Rolle",
+  "license": "UNLICENSED",
+  "private": true,
   "scripts": {
     "start": "func start",
     "lint": "eslint \"**/*.js\" && prettier -c \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
