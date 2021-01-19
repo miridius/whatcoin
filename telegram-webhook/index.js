@@ -247,7 +247,7 @@ module.exports = createAzureTelegramWebhook(
         return 'Hi there! To get started try typing /price';
       case '/version': {
         const { name, version } = require('../package.json');
-        return `${name} v${version}`;
+        return `${name.charAt(0).toUpperCase() + name.slice(1)} v${version}`;
       }
       case '/price':
         return getPrice(...args);

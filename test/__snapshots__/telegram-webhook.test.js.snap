@@ -376,6 +376,6 @@ exports[`/version - shows current version info 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "WhatCoin v0.5.0",
+  "text": "Whatcoin v0.5.0",
 }
 `;
