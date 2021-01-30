@@ -65,6 +65,20 @@ const getVs = async (vs_currency) => {
   if (symbol && (await getVsCurrencies()).has(symbol)) return symbol;
 };
 
+const getAmount = (amtString) => {
+  if (typeof amtString !== 'string') return amtString;
+  debug('parsing:', amtString, 'using locale:', locale);
+  const decimal = new Intl.NumberFormat(locale).formatToParts(1.1)?.[1]?.value;
+  const num = parseFloat(
+    amtString
+      .split(decimal)
+      .map((s) => s.replace(/\D/g, ''))
+      .join('.'),
+  );
+  debug('result:', num);
+  return isNaN(num) ? undefined : num;
+};
+
 const fmt = (num, currency, sigFig = 6) =>
   new Intl.NumberFormat(locale, {
     ...(currency && { style: 'currency', currency, minimumFractionDigits: 0 }),
@@ -92,96 +106,54 @@ _(updated ${fmtDate(data.last_updated)})_`,
   };
 };
 
-const getPrice = async (currency = 'bitcoin', in_currency = 'usd') => {
-  const [{ id } = {}, vs] = await Promise.all([
-    getCoin(currency),
-    getVs(in_currency),
-  ]);
-  if (!id) return `Sorry, I couldn't find ${currency}. Try using the full name`;
-  if (!vs)
-    return `Sorry, I can't list prices in ${in_currency}. Supported base currencies are: ${[
-      ...(await getVsCurrencies()),
-    ].join(', ')}`;
+const getPrice = async ({ id }, vs) => {
   debug(`getting market info for ${id} in ${vs}...`);
   const res = await api.coins.markets({
     ids: id,
     vs_currency: vs,
+    // @ts-ignore
     price_change_percentage: '1h,24h,7d,30d',
   });
   debug('res:', res);
   return res?.data?.[0] && formatPriceData(res?.data?.[0], vs);
 };
 
-const parseIntlNumber = (numString) => {
-  if (typeof numString !== 'string') return numString;
-  debug('parsing:', numString, 'using locale:', locale);
-  const decimal = new Intl.NumberFormat(locale).formatToParts(1.1)?.[1]?.value;
-  const num = parseFloat(
-    numString
-      .split(decimal)
-      .map((s) => s.replace(/\D/g, ''))
-      .join('.'),
-  );
-  debug('result:', num);
-  return parseFloat(num);
-};
-
-const convert = async (amount = 1, from = 'bitcoin', to = 'usd') => {
-  const amt = parseIntlNumber(amount);
-  if (isNaN(amt)) return `Amount '${amount}' is not a valid number`;
-  const [{ id, symbol } = {}, vs] = await Promise.all([
-    getCoin(from),
-    getVs(to),
-  ]);
-  if (!id) return `Sorry, I couldn't find ${from}. Try using the full name`;
-  if (vs) {
-    debug(`getting simple price for ${id} in ${vs}...`);
-    const res = await api.simple.price({ ids: id, vs_currencies: vs });
-    debug('res:', res);
-    const price = res?.data?.[id]?.[vs];
-    if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
-    return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(amt * price, vs)}`;
-  } else {
-    const { id: to_id, symbol: to_symbol } = (await getCoin(to)) || {};
-    if (!to_id) return `Sorry, I couldn't find ${to}. Try using the full name`;
-    debug(`getting simple price for ${id} and ${to_id} in usd...`);
-    const res = await api.simple.price({
-      ids: [id, to_id],
-      vs_currencies: 'usd',
-    });
-    debug('res:', res);
-    const price = res?.data?.[id]?.usd;
-    if (!price) return `Sorry, I couldn't look up the price for ${id}`;
-    const to_price = res?.data?.[to_id]?.usd;
-    if (!to_price) return `Sorry, I couldn't look up the price for ${to_id}`;
-    return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(
-      (amt * price) / to_price,
-    )} ${to_symbol.toUpperCase()}`;
-  }
-};
-
-const regret = async (
-  inputAmt = 10000,
-  inputCoin = 'bitcoin',
-  inputSoldFor = 41,
-  inputVs = 'USD',
-) => {
-  const amt = parseIntlNumber(inputAmt);
-  if (isNaN(amt)) return `Amount '${inputAmt}' is not a valid number`;
-  const soldFor = parseIntlNumber(inputSoldFor);
-  if (isNaN(soldFor))
-    return `Sell price '${inputSoldFor}' is not a valid number`;
-  const [{ id, symbol } = {}, vs] = await Promise.all([
-    getCoin(inputCoin),
-    getVs(inputVs),
-  ]);
-  if (!id)
-    return `Sorry, I couldn't find ${inputCoin}. Try using the full name`;
-  if (!vs)
-    return `Sorry, I can't get prices in ${inputVs}. Supported base currencies are: ${[
-      ...(await getVsCurrencies()),
-    ].join(', ')}`;
+const convert = async (amt, { id, symbol }, vs) => {
   debug(`getting simple price for ${id} in ${vs}...`);
+  // @ts-ignore
+  const res = await api.simple.price({ ids: id, vs_currencies: vs });
+  debug('res:', res);
+  const price = res?.data?.[id]?.[vs];
+  if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
+  return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(amt * price, vs)}`;
+};
+
+const convertCoinToCoin = async (
+  amt,
+  { id, symbol },
+  { id: to_id, symbol: to_symbol },
+) => {
+  debug(`getting simple price for ${id} and ${to_id} in usd...`);
+  // @ts-ignore
+  const res = await api.simple.price({
+    ids: [id, to_id],
+    vs_currencies: 'usd',
+  });
+  debug('res:', res);
+  const price = res?.data?.[id]?.usd;
+  if (!price) return `Sorry, I couldn't look up the price for ${id}`;
+  const to_price = res?.data?.[to_id]?.usd;
+  if (!to_price) return `Sorry, I couldn't look up the price for ${to_id}`;
+  return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(
+    (amt * price) / to_price,
+  )} ${to_symbol.toUpperCase()}`;
+};
+
+const convertVsToVs = convert; // TODO
+
+const regret = async (amt, { id, symbol }, soldFor, vs) => {
+  debug(`getting simple price for ${id} in ${vs}...`);
+  // @ts-ignore
   const res = await api.simple.price({ ids: id, vs_currencies: vs });
   debug('res:', res);
   const current = res?.data?.[id]?.[vs];
@@ -207,6 +179,7 @@ const top = async (n, inputVs = 'usd') => {
     return `Sorry, I can't list prices in ${inputVs}. Supported base currencies are: ${[
       ...(await getVsCurrencies()),
     ].join(', ')}`;
+  // @ts-ignore
   const { data } = await api.coins.markets({ vs_currency: vs, per_page: n });
   debug('data:', data);
   if (!data?.length)
@@ -231,41 +204,102 @@ const top = async (n, inputVs = 'usd') => {
   };
 };
 
+const version = () => {
+  const { name, version } = require('../package.json');
+  return `${name.charAt(0).toUpperCase() + name.slice(1)} v${version}`;
+};
+
+/** @typedef {{defaultVal?: any, parser: (v: string) => any, errorMsg: (v: string) => string}} */
+// eslint-disable-next-line no-unused-vars
+var ArgSpec;
+
+/** @type {ArgSpec} */
+const coin = {
+  defaultVal: 'bitcoin',
+  parser: getCoin,
+  errorMsg: (input) =>
+    `Sorry, I couldn't find ${input}. Try using the full name`,
+};
+/** @type {ArgSpec} */
+const vs = {
+  defaultVal: 'usd',
+  parser: getVs,
+  errorMsg: (input) => `Sorry, I can't get prices in ${input}.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.`,
+};
+/** @type {ArgSpec} */
+const amount = {
+  defaultVal: 1,
+  parser: getAmount,
+  errorMsg: (input) => `Amount '${input}' is not a valid number`,
+};
+
+const withDefault = (argSpec, defaultVal) => ({ ...argSpec, defaultVal });
+
+/**
+ * [command, argSpecs, commandParser][]
+ * @type {[string, ArgSpec[], Function][]}
+ */
+const commands = [
+  ['/start', [], () => 'Hi there! To get started try typing /price'],
+  ['/version', [], version],
+  ['/price', [coin, vs], getPrice],
+  ['/price', [amount, coin, vs], convert],
+  ['/price', [coin, amount, vs], (c, amt, vs) => convert(amt, c, vs)],
+  ['/convert', [amount, coin, vs], convert],
+  ['/convert', [amount, coin, coin], convertCoinToCoin],
+  ['/convert', [amount, vs, coin], (amt, vs, c) => convert(amt, c, vs)],
+  ['/convert', [amount, vs, vs], convertVsToVs],
+  [
+    '/regret',
+    [withDefault(amount, 10000), coin, withDefault(amount, 41), vs],
+    regret,
+  ],
+  ['/top10', [vs], (vs) => top(10, vs)],
+  ['/top20', [vs], (vs) => top(20, vs)],
+];
+
+/**
+ * @param {string} cmd
+ * @param {string[]} args
+ */
+const execute = async (cmd, args) => {
+  let firstError;
+  for (const [command, argSpecs, commandParser] of commands) {
+    if (command !== cmd) continue;
+    const vals = await Promise.all(
+      argSpecs.map(async ({ defaultVal, parser, errorMsg }, i) => {
+        const val = args[i];
+        const parsed = await parser(val ?? defaultVal);
+        const error = parsed == undefined && errorMsg(val);
+        return { parsed, error };
+      }),
+    );
+    const error = vals.find((v) => v.error)?.error;
+    if (error) {
+      firstError = firstError ?? error;
+    } else {
+      return commandParser(...vals.map((v) => v.parsed));
+    }
+  }
+  if (!firstError) warn(`Unknown command: ${cmd}`);
+  return firstError;
+};
+
 module.exports = createAzureTelegramWebhook(
-  async ({ text, from: { language_code } }, _log) => {
+  async ({ text, from: { language_code } = {} }, _log) => {
     // set global loggers & lang so we don't need to pass them to every function
     ({ verbose: debug, info, warn } = _log);
     locale = language_code || 'en';
     // ignore non-text messages and non-commands
     if (!text?.startsWith('/')) return;
     // parse the message into command + args
-    const [cmd, ...args] = text.split(/\s+/);
+    let [cmd, ...args] = text.split(/\s+/);
+    // remove @mention if present
+    cmd = cmd.split('@')[0];
     debug({ cmd, args });
-    // route the command to the appropriate handler & remove @mention if present
-    switch (cmd.split('@')[0]) {
-      case '/start':
-        return 'Hi there! To get started try typing /price';
-      case '/version': {
-        const { name, version } = require('../package.json');
-        return `${name.charAt(0).toUpperCase() + name.slice(1)} v${version}`;
-      }
-      case '/price':
-        return getPrice(...args);
-      case '/convert':
-        return convert(...args);
-      case '/regret':
-      case '/regrets':
-      case '/ragert':
-      case '/ragerts':
-        return regret(...args);
-      case '/top10':
-        return top(10, ...args);
-      case '/top20':
-        return top(20, ...args);
-      default:
-        warn(`Unknown command: ${cmd}`);
-        return;
-    }
+    // route the command to the appropriate handler
+    return execute(cmd, args);
   },
   DAVO_CHAT_ID,
 );

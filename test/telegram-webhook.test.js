@@ -7,13 +7,7 @@ const filenamify = require('filenamify');
 afterAll(() => nock.restore());
 
 nock.back.fixtures = __dirname + '/__fixtures__/';
-if (process.env.CI) {
-  console.info('Running in CI - locking down nockBack fixtures');
-  nock.back.setMode('lockdown');
-} else {
-  console.info('process.env.CI is not set - running nockBack in record mode');
-  nock.back.setMode('record');
-}
+nock.back.setMode(process.env.CI ? 'lockdown' : 'record');
 
 const msgReply = async (text, locale) => {
   const req = {

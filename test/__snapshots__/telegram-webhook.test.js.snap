@@ -28,7 +28,8 @@ exports[`/convert 100 eth asdfasdf - returns an error for invalid vs 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+  "text": "Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
 }
 `;
 
@@ -148,7 +149,8 @@ exports[`/price bitcoin asdasd - returns an error for invalid vs currency 1`] = 
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I can't list prices in asdasd. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau, bits, sats",
+  "text": "Sorry, I can't get prices in asdasd.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
 }
 `;
 
@@ -236,7 +238,8 @@ exports[`/regret 1 btc 100 asdfasdf - returns an error for invalid vs 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdfasdf. Supported base currencies are: btc, eth, ltc, bch, bnb, eos, xrp, xlm, link, dot, yfi, usd, aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, cny, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr, jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, try, twd, uah, vef, vnd, zar, xdr, xag, xau, bits, sats",
+  "text": "Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
 }
 `;
 
@@ -244,7 +247,7 @@ exports[`/regret 1 btc foo - returns an error for invalid soldAt 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sell price 'foo' is not a valid number",
+  "text": "Amount 'foo' is not a valid number",
 }
 `;
 
