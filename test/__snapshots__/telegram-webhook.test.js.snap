@@ -1,10 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/convert - defaults to 1 btc in usd 1`] = `
+exports[`/convert - defaults to 1 usd in usd 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "1 BTC = $35,807",
+  "text": "$1 = $1",
+}
+`;
+
+exports[`/convert 42 doge - defaults to converting coins to usd 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "42 DOGE = $1.04471",
 }
 `;
 
@@ -12,7 +20,8 @@ exports[`/convert 100 asdfasdf - returns an error for invalid coin 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
+  "text": "Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
 }
 `;
 
@@ -30,6 +39,22 @@ Object {
   "method": "sendMessage",
   "text": "Sorry, I can't get prices in asdfasdf.
 Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
+}
+`;
+
+exports[`/convert 100 usd aud - supports vs to vs 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "$100 = A$130.856",
+}
+`;
+
+exports[`/convert 100 usd doge - supports vs to coin 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "$100 = 4,020.24 DOGE",
 }
 `;
 
@@ -61,7 +86,7 @@ exports[`/convert 400.000,00 doge eur - understands de locale 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "text": "400.000 DOGE = 3.028,83 €",
+  "text": "400.000 DOGE = € 3.028,83",
 }
 `;
 
@@ -92,6 +117,14 @@ h/d/w/m: \`-0.228%\` / \`-1.9%\` / \`-11.1%\` / \`57%\`
 Market cap:  \`$663,977,264,729\`
 24h volume:  \`$52,497,360,217\`
 _(updated Sun, 17 Jan 2021 19:02:48 GMT)_",
+}
+`;
+
+exports[`/price 10000 doge - redirects to convert when first arg is a number 1`] = `
+Object {
+  "chat_id": 2,
+  "method": "sendMessage",
+  "text": "10,000 DOGE = $248.742",
 }
 `;
 
@@ -168,17 +201,11 @@ _(updated Sat, 16 Jan 2021 03:28:33 GMT)_",
 }
 `;
 
-exports[`/price doge bitcoin - finds vs by coin id 1`] = `
+exports[`/price doge 10000 - redirects to convert when second arg is a number 1`] = `
 Object {
   "chat_id": 2,
   "method": "sendMessage",
-  "parse_mode": "markdown",
-  "text": "*Dogecoin (DOGE)* in BTC
-Current price:  \`BTC 0.0000002563\`
-h/d/w/m: \`-0.111%\` / \`2.22%\` / \`1.07%\` / \`56.9%\` 
-Market cap:  \`BTC 33,001\`
-24h volume:  \`BTC 9,494\`
-_(updated Sun, 17 Jan 2021 19:00:15 GMT)_",
+  "text": "10,000 DOGE = $248.742",
 }
 `;
 
@@ -351,26 +378,26 @@ Object {
   "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Top 20 Cryptocurrencies*
-*1. Bitcoin:*  BTC 1 (\`0%\`)
-*2. Ethereum:*  BTC 0.0341977 (\`-0.669%\`)
-*3. Tether:*  BTC 0.00002792 (\`2.25%\`)
-*4. Polkadot:*  BTC 0.00047112 (\`-4.57%\`)
-*5. XRP:*  BTC 0.00000773 (\`-1.01%\`)
-*6. Cardano:*  BTC 0.00001044 (\`7.97%\`)
-*7. Litecoin:*  BTC 0.00398104 (\`-0.727%\`)
-*8. Chainlink:*  BTC 0.00064526 (\`11.6%\`)
-*9. Bitcoin Cash:*  BTC 0.0133864 (\`-1.94%\`)
-*10. Binance Coin:*  BTC 0.00128018 (\`8.72%\`)
-*11. Stellar:*  BTC 0.00000839 (\`2.96%\`)
-*12. USD Coin:*  BTC 0.00002803 (\`2%\`)
-*13. Wrapped Bitcoin:*  BTC 0.999147 (\`-0.202%\`)
-*14. Bitcoin SV:*  BTC 0.00557538 (\`-1.75%\`)
-*15. Monero:*  BTC 0.0043971 (\`1.55%\`)
-*16. EOS:*  BTC 0.00007692 (\`-0.215%\`)
-*17. Aave:*  BTC 0.00546154 (\`7.28%\`)
-*18. Tezos:*  BTC 0.00008176 (\`0.45%\`)
-*19. Synthetix Network Token:*  BTC 0.0004369 (\`-2.22%\`)
-*20. TRON:*  BTC 0.0000008441 (\`0.183%\`)
+*1. Bitcoin:*  1 BTC (\`0%\`)
+*2. Ethereum:*  0.0341977 BTC (\`-0.669%\`)
+*3. Tether:*  0.00002792 BTC (\`2.25%\`)
+*4. Polkadot:*  0.00047112 BTC (\`-4.57%\`)
+*5. XRP:*  0.00000773 BTC (\`-1.01%\`)
+*6. Cardano:*  0.00001044 BTC (\`7.97%\`)
+*7. Litecoin:*  0.00398104 BTC (\`-0.727%\`)
+*8. Chainlink:*  0.00064526 BTC (\`11.6%\`)
+*9. Bitcoin Cash:*  0.0133864 BTC (\`-1.94%\`)
+*10. Binance Coin:*  0.00128018 BTC (\`8.72%\`)
+*11. Stellar:*  0.00000839 BTC (\`2.96%\`)
+*12. USD Coin:*  0.00002803 BTC (\`2%\`)
+*13. Wrapped Bitcoin:*  0.999147 BTC (\`-0.202%\`)
+*14. Bitcoin SV:*  0.00557538 BTC (\`-1.75%\`)
+*15. Monero:*  0.0043971 BTC (\`1.55%\`)
+*16. EOS:*  0.00007692 BTC (\`-0.215%\`)
+*17. Aave:*  0.00546154 BTC (\`7.28%\`)
+*18. Tezos:*  0.00008176 BTC (\`0.45%\`)
+*19. Synthetix Network Token:*  0.0004369 BTC (\`-2.22%\`)
+*20. TRON:*  0.0000008441 BTC (\`0.183%\`)
 _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 }
 `;

@@ -2,17 +2,17 @@
   {
     "scope": "https://api.coingecko.com:443",
     "method": "GET",
-    "path": "/api/v3/simple/price?ids=bitcoin&vs_currencies=usd",
+    "path": "/api/v3/simple/price?ids=dogecoin&vs_currencies=usd",
     "body": "",
     "status": 200,
     "response": {
-      "bitcoin": {
-        "usd": 35807
+      "dogecoin": {
+        "usd": 0.02487416
       }
     },
     "rawHeaders": [
       "Date",
-      "Sun, 17 Jan 2021 19:03:44 GMT",
+      "Sat, 30 Jan 2021 21:02:15 GMT",
       "Content-Type",
       "application/json; charset=utf-8",
       "Transfer-Encoding",
@@ -20,9 +20,9 @@
       "Connection",
       "close",
       "Set-Cookie",
-      "__cfduid=d1e6e69e5650d392893dc617ccac2c20c1610910224; expires=Tue, 16-Feb-21 19:03:44 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
+      "__cfduid=d5ce6430df6a93cfb300572649fb380a01612040535; expires=Mon, 01-Mar-21 21:02:15 GMT; path=/; domain=.coingecko.com; HttpOnly; SameSite=Lax",
       "Cache-Control",
-      "max-age=60, public, must-revalidate, s-maxage=60",
+      "max-age=30, public, must-revalidate, s-maxage=60",
       "Access-Control-Allow-Origin",
       "*",
       "Access-Control-Allow-Methods",
@@ -36,25 +36,25 @@
       "Vary",
       "Accept-Encoding, Origin",
       "ETag",
-      "W/\"818ca67ccd4575861a17aa80f7f52dc5\"",
+      "W/\"a654c985dc4228769c0d0537e8dabee9\"",
       "X-Request-Id",
-      "1755e3ed-7335-46cb-9f78-73840a2c23a9",
+      "ecf3587b-492e-442b-b9be-1f4c61a0a798",
       "X-Runtime",
-      "0.003055",
+      "0.022977",
       "Alternate-Protocol",
       "443:npn-spdy/2",
       "CF-Cache-Status",
       "HIT",
       "Age",
-      "20",
+      "9",
       "cf-request-id",
-      "07b354669a000064f77e294000000001",
+      "07f6b396370000e003f9a47000000001",
       "Expect-CT",
       "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
       "Server",
       "cloudflare",
       "CF-RAY",
-      "61325684280d64f7-FRA"
+      "619e22038e8fe003-FRA"
     ],
     "responseIsBinary": false
   }

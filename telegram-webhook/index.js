@@ -60,9 +60,6 @@ const getCoin = async (searchString) => {
 const getVs = async (vs_currency) => {
   vs_currency = vs_currency.toLowerCase();
   if ((await getVsCurrencies()).has(vs_currency)) return vs_currency;
-  debug(`${vs_currency} is not a valid vs currency, looking up its symbol`);
-  const { symbol } = (await getCoin(vs_currency)) || {};
-  if (symbol && (await getVsCurrencies()).has(symbol)) return symbol;
 };
 
 const getAmount = (amtString) => {
@@ -79,13 +76,24 @@ const getAmount = (amtString) => {
   return isNaN(num) ? undefined : num;
 };
 
-const fmt = (num, currency, sigFig = 6) =>
-  new Intl.NumberFormat(locale, {
-    ...(currency && { style: 'currency', currency, minimumFractionDigits: 0 }),
-    ...(num < 10 ** sigFig
-      ? { maximumSignificantDigits: sigFig }
-      : { maximumFractionDigits: 0 }),
-  }).format(num);
+const reverseWords = (str) => str.split(/\s+/).reverse().join(' ');
+const fmt = (num, currency, sigFig = 6) => {
+  if (currency && currency.length !== 3) {
+    return `${fmt(num, undefined, sigFig)} ${currency.toUpperCase()}`;
+  } else {
+    const opts = {
+      ...(currency && {
+        style: 'currency',
+        currency,
+        minimumFractionDigits: 0,
+      }),
+      ...(num < 10 ** sigFig
+        ? { maximumSignificantDigits: sigFig }
+        : { maximumFractionDigits: 0 }),
+    };
+    return reverseWords(new Intl.NumberFormat(locale, opts).format(num));
+  }
+};
 const fmtPct = (num) => (num == undefined ? '?' : fmt(num, undefined, 3) + '%');
 
 const fmtDate = (date) => new Date(date).toUTCString();
@@ -118,45 +126,57 @@ const getPrice = async ({ id }, vs) => {
   return res?.data?.[0] && formatPriceData(res?.data?.[0], vs);
 };
 
-const convert = async (amt, { id, symbol }, vs) => {
-  debug(`getting simple price for ${id} in ${vs}...`);
+/**
+ * @param {string|string[]} ids
+ * @param {string|string[]} vs_currencies
+ */
+const simplePrice = async (ids, vs_currencies) => {
+  debug(`getting simple price for ${ids} in ${vs_currencies}...`);
   // @ts-ignore
-  const res = await api.simple.price({ ids: id, vs_currencies: vs });
+  const res = await api.simple.price({ ids, vs_currencies });
   debug('res:', res);
-  const price = res?.data?.[id]?.[vs];
-  if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
-  return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(amt * price, vs)}`;
+  return res?.data;
 };
 
-const convertCoinToCoin = async (
+const formatConvertData = (amt, rate, from, to) =>
+  `${fmt(amt, from)} = ${fmt(amt * rate, to)}`;
+
+const convertC2V = async (amt, { id, symbol }, vs) => {
+  const price = (await simplePrice(id, vs))?.[id]?.[vs];
+  if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
+  return formatConvertData(amt, price, symbol, vs);
+};
+
+const convertV2C = async (amt, vs, { id, symbol }) => {
+  const price = (await simplePrice(id, vs))?.[id]?.[vs];
+  if (!price) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
+  return formatConvertData(amt, 1 / price, vs, symbol);
+};
+
+const convertC2C = async (
   amt,
   { id, symbol },
-  { id: to_id, symbol: to_symbol },
+  { id: toId, symbol: toSymbol },
 ) => {
-  debug(`getting simple price for ${id} and ${to_id} in usd...`);
-  // @ts-ignore
-  const res = await api.simple.price({
-    ids: [id, to_id],
-    vs_currencies: 'usd',
-  });
-  debug('res:', res);
-  const price = res?.data?.[id]?.usd;
+  const data = await simplePrice([id, toId], 'usd');
+  const price = data?.[id]?.usd;
   if (!price) return `Sorry, I couldn't look up the price for ${id}`;
-  const to_price = res?.data?.[to_id]?.usd;
-  if (!to_price) return `Sorry, I couldn't look up the price for ${to_id}`;
-  return `${fmt(amt)} ${symbol.toUpperCase()} = ${fmt(
-    (amt * price) / to_price,
-  )} ${to_symbol.toUpperCase()}`;
+  const to_price = data?.[toId]?.usd;
+  if (!to_price) return `Sorry, I couldn't look up the price for ${toId}`;
+  return formatConvertData(amt, price / to_price, symbol, toSymbol);
 };
 
-const convertVsToVs = convert; // TODO
+const convertV2V = async (amt, fromVs, toVs) => {
+  const bitcoin = (await simplePrice('bitcoin', [fromVs, toVs]))?.bitcoin;
+  const rate = bitcoin?.[toVs] / bitcoin?.[fromVs];
+  if (!rate) {
+    return `Sorry, I couldn't look up the exchange rate for ${fromVs} to ${toVs}`;
+  }
+  return formatConvertData(amt, rate, fromVs, toVs);
+};
 
 const regret = async (amt, { id, symbol }, soldFor, vs) => {
-  debug(`getting simple price for ${id} in ${vs}...`);
-  // @ts-ignore
-  const res = await api.simple.price({ ids: id, vs_currencies: vs });
-  debug('res:', res);
-  const current = res?.data?.[id]?.[vs];
+  const current = (await simplePrice(id, vs))?.[id]?.[vs];
   if (!current) return `Sorry, I couldn't look up the price for ${id} in ${vs}`;
   const missedProfit = current * amt - soldFor;
   const sym = symbol.toUpperCase();
@@ -173,12 +193,7 @@ const regret = async (amt, { id, symbol }, soldFor, vs) => {
       )} less today than the ${fmt(soldFor, vs)} you sold it for!`;
 };
 
-const top = async (n, inputVs = 'usd') => {
-  const vs = await getVs(inputVs);
-  if (!vs)
-    return `Sorry, I can't list prices in ${inputVs}. Supported base currencies are: ${[
-      ...(await getVsCurrencies()),
-    ].join(', ')}`;
+const top = async (n, vs) => {
   // @ts-ignore
   const { data } = await api.coins.markets({ vs_currency: vs, per_page: n });
   debug('data:', data);
@@ -244,12 +259,12 @@ const commands = [
   ['/start', [], () => 'Hi there! To get started try typing /price'],
   ['/version', [], version],
   ['/price', [coin, vs], getPrice],
-  ['/price', [amount, coin, vs], convert],
-  ['/price', [coin, amount, vs], (c, amt, vs) => convert(amt, c, vs)],
-  ['/convert', [amount, coin, vs], convert],
-  ['/convert', [amount, coin, coin], convertCoinToCoin],
-  ['/convert', [amount, vs, coin], (amt, vs, c) => convert(amt, c, vs)],
-  ['/convert', [amount, vs, vs], convertVsToVs],
+  ['/price', [amount, coin, vs], convertC2V],
+  ['/price', [coin, amount, vs], (c, a, v) => convertC2V(a, c, v)],
+  ['/convert', [amount, vs, vs], convertV2V],
+  ['/convert', [amount, coin, vs], convertC2V],
+  ['/convert', [amount, vs, coin], convertV2C],
+  ['/convert', [amount, coin, coin], convertC2C],
   [
     '/regret',
     [withDefault(amount, 10000), coin, withDefault(amount, 41), vs],
@@ -279,6 +294,7 @@ const execute = async (cmd, args) => {
     if (error) {
       firstError = firstError ?? error;
     } else {
+      debug(argSpecs, commandParser.name, vals);
       return commandParser(...vals.map((v) => v.parsed));
     }
   }
