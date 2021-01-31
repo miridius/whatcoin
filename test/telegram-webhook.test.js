@@ -41,9 +41,17 @@ describe('webhook', () => {
   });
 });
 
+describe('/version', () => {
+  it('- shows name and version info', () =>
+    expect(msgReply('/version')).resolves.toMatchObject({
+      chat_id: 2,
+      method: 'sendMessage',
+      text: /Whatcoin v[\d.]+/,
+    }));
+});
+
 const commandTests = {
   '/start': 'shows a welcome message',
-  '/version': 'shows current version info',
   '/price': [
     ['defaults to btc in usd'],
     ['supports other currencies', 'ethereum eur'],

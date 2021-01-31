@@ -401,11 +401,3 @@ Object {
 _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 }
 `;
-
-exports[`/version - shows current version info 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Whatcoin v0.5.0",
-}
-`;
