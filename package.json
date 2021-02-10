@@ -17,9 +17,9 @@
     "release": "npx ncu -e2 && npx np --no-publish --no-yarn"
   },
   "dependencies": {
-    "canvas": "^2.6.1",
     "coingecko-api": "^1.0.10",
     "serverless-telegram": "^0.4.0",
+    "sharp": "^0.27.1",
     "vega": "^5.19.1",
     "vega-lite": "^4.17.0"
   },

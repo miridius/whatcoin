@@ -6,6 +6,7 @@ const api = new CoinGecko();
 const memoize = (fn) => {
   const cache = {};
   return function (...args) {
+    // @ts-ignore
     return (cache[args] = cache[args] ?? fn.apply(this, args));
   };
 };

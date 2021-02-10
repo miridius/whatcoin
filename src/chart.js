@@ -2,9 +2,9 @@ const CoinGecko = require('coingecko-api');
 const vega = require('vega');
 const { compile } = require('vega-lite');
 
-const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const sharp = require('sharp');
 
 const api = new CoinGecko();
 
@@ -31,14 +31,14 @@ const getData = async (id, vs_currency, days) => {
     values: data.total_volumes
       .map(([x, y]) => ({ x, y: y / 1000000, type: 'vol' }))
       .concat(data.prices.map(([x, y]) => ({ x, y, type: 'price' }))),
-    rising: data.prices[data.prices.length - 1][1] >= data.prices[0][1],
+    isRising: data.prices[data.prices.length - 1][1] >= data.prices[0][1],
   };
 };
 
 const capitalise = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
-const createSpec = (name, vs, days, values, rising) => {
-  const priceColor = rising ? theme.priceUp : theme.priceDown;
+const createSpec = (name, vs, days, values, isRising) => {
+  const priceColor = isRising ? theme.priceUp : theme.priceDown;
   return compile({
     $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
     description:
@@ -131,23 +131,14 @@ const createSpec = (name, vs, days, values, rising) => {
 };
 
 /**
- * @param {vega.View} view
- * @returns {import('canvas').Canvas} canvas
- */
-// @ts-ignore
-const getCanvas = (view) => view.toCanvas();
-
-/**
  * Generate a static PNG image
- * @param {import('canvas').Canvas} canvas
+ * @param {string} svg
  */
-const savePng = async (canvas) =>
-  new Promise((resolve) => {
-    const filePath = path.resolve(os.tmpdir(), `${+new Date()}.png`);
-    const out = fs.createWriteStream(filePath);
-    canvas.createPNGStream().pipe(out);
-    out.on('finish', () => resolve(filePath));
-  });
+const savePng = async (svg) => {
+  const filePath = path.resolve(os.tmpdir(), `${+new Date()}.png`);
+  await sharp(Buffer.from(svg)).toFile(filePath);
+  return filePath;
+};
 
 /** @this {import('serverless-telegram').MessageEnv} */
 exports.makeChart = async function ({ id, name }, vs, days) {
@@ -155,17 +146,18 @@ exports.makeChart = async function ({ id, name }, vs, days) {
   this.send({ action: 'upload_photo' });
 
   this.debug('fetching chart data...', id, vs, days);
-  const { values, rising } = await getData(id, vs, days);
-  this.debug({ rising });
+  const { values, isRising } = await getData(id, vs, days);
 
   this.debug('compiling...');
-  const spec = createSpec(name, vs, days, values, rising);
+  const spec = createSpec(name, vs, days, values, isRising);
 
   this.debug('rendering...');
   const view = new vega.View(vega.parse(spec), { renderer: 'none' });
-  const canvas = await getCanvas(view);
 
-  this.debug('saving PNG...');
-  const photo = await savePng(canvas);
+  this.debug('generating SVG...');
+  const svg = await view.toSVG();
+
+  this.debug('saving to PNG file...');
+  const photo = await savePng(svg);
   return { photo };
 };
