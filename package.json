@@ -1,6 +1,6 @@
 {
   "name": "whatcoin",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A telegram bot providing cryptocurrency price/market info and calculations",
   "author": "David D. Rolle",
   "license": "UNLICENSED",
