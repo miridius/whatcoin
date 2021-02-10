@@ -91,3 +91,6 @@ out
 appsettings.json
 local.settings.json
 package/
+
+# Image snapshot diffs
+__diff_output__/

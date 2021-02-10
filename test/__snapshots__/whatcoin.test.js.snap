@@ -1,115 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`/convert - defaults to 1 usd in usd 1`] = `
+exports[`/chart - defaults to bitcoin in USD - last 1d 2`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "$1 = $1",
+  "photo": "see image snapshot /chart - defaults to bitcoin in USD - last 1d",
 }
 `;
 
-exports[`/convert 42 doge - defaults to converting coins to usd 1`] = `
+exports[`/chart eth aud 30 - supports other options 2`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "42 DOGE = $1.04471",
+  "photo": "see image snapshot /chart eth aud 30 - supports other options",
 }
 `;
+
+exports[`/chart usdc - turns red if price is falling 2`] = `
+Object {
+  "photo": "see image snapshot /chart usdc - turns red if price is falling",
+}
+`;
+
+exports[`/convert - defaults to 1 usd in usd 1`] = `"$1 = $1"`;
+
+exports[`/convert 42 doge - defaults to converting coins to usd 1`] = `"42 DOGE = $1.04471"`;
 
 exports[`/convert 100 asdfasdf - returns an error for invalid coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdfasdf.
-Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
-}
+"Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
 `;
 
-exports[`/convert 100 doge ark - supports coin to coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "100 DOGE = 2.26598 ARK",
-}
-`;
+exports[`/convert 100 doge ark - supports coin to coin 1`] = `"100 DOGE = 2.26598 ARK"`;
 
 exports[`/convert 100 eth asdfasdf - returns an error for invalid vs 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdfasdf.
-Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
-}
+"Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
 `;
 
-exports[`/convert 100 usd aud - supports vs to vs 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "$100 = A$130.856",
-}
-`;
+exports[`/convert 100 usd aud - supports vs to vs 1`] = `"$100 = A$130.856"`;
 
-exports[`/convert 100 usd doge - supports vs to coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "$100 = 4,020.24 DOGE",
-}
-`;
+exports[`/convert 100 usd doge - supports vs to coin 1`] = `"$100 = 4,020.24 DOGE"`;
 
-exports[`/convert 400,000.00 doge eur - ignores commas in en locale 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "400,000 DOGE = €3,028.83",
-}
-`;
+exports[`/convert 400,000.00 doge eur - ignores commas in en locale 1`] = `"400,000 DOGE = €3,028.83"`;
 
-exports[`/convert 400,000.00 doge eur - ignores empty locale 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "400,000 DOGE = €3,028.83",
-}
-`;
+exports[`/convert 400,000.00 doge eur - ignores empty locale 1`] = `"400,000 DOGE = €3,028.83"`;
 
-exports[`/convert 400,000.00 doge eur - ignores xx locale 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "400,000 DOGE = €3,028.83",
-}
-`;
+exports[`/convert 400,000.00 doge eur - ignores xx locale 1`] = `"400,000 DOGE = €3,028.83"`;
 
-exports[`/convert 400.000,00 doge eur - understands de locale 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "400.000 DOGE = € 3.028,83",
-}
-`;
+exports[`/convert 400.000,00 doge eur - understands de locale 1`] = `"400.000 DOGE = € 3.028,83"`;
 
-exports[`/convert 1000 ethereum aud - supports other currencies 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "1,000 ETH = A$1,602,030",
-}
-`;
+exports[`/convert 1000 ethereum aud - supports other currencies 1`] = `"1,000 ETH = A$1,602,030"`;
 
-exports[`/convert foo - returns an error for invalid amount 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Amount 'foo' is not a valid number",
-}
-`;
+exports[`/convert foo - returns an error for invalid amount 1`] = `"Amount 'foo' is not a valid number"`;
 
 exports[`/price - defaults to btc in usd 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Bitcoin (BTC)* in USD
 Current price:  \`$35,807\`
@@ -120,18 +62,10 @@ _(updated Sun, 17 Jan 2021 19:02:48 GMT)_",
 }
 `;
 
-exports[`/price 10000 doge - redirects to convert when first arg is a number 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "10,000 DOGE = $248.742",
-}
-`;
+exports[`/price 10000 doge - redirects to convert when first arg is a number 1`] = `"10,000 DOGE = $248.742"`;
 
 exports[`/price ETH GBP - finds coins by symbol 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in GBP
 Current price:  \`£906.23\`
@@ -144,8 +78,6 @@ _(updated Sun, 17 Jan 2021 19:03:27 GMT)_",
 
 exports[`/price PEAKDEFI - finds coins by name 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*PEAKDEFI (PEAK)* in USD
 Current price:  \`$0.269714\`
@@ -158,8 +90,6 @@ _(updated Sun, 17 Jan 2021 19:00:08 GMT)_",
 
 exports[`/price algoha - finds coins by symbol partial match 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*0.5X Long Algorand Token (ALGOHALF)* in USD
 Current price:  \`$9,857.57\`
@@ -170,27 +100,15 @@ _(updated Sat, 16 Jan 2021 08:09:16 GMT)_",
 }
 `;
 
-exports[`/price asdfasdf eur - returns an error for invalid coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
-}
-`;
+exports[`/price asdfasdf eur - returns an error for invalid coin 1`] = `"Sorry, I couldn't find asdfasdf. Try using the full name"`;
 
 exports[`/price bitcoin asdasd - returns an error for invalid vs currency 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdasd.
-Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
-}
+"Sorry, I can't get prices in asdasd.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
 `;
 
 exports[`/price bitm - finds coins by id partial match 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*BitMoney (BIT)* in USD
 Current price:  \`$0.00003653\`
@@ -201,18 +119,10 @@ _(updated Sat, 16 Jan 2021 03:28:33 GMT)_",
 }
 `;
 
-exports[`/price doge 10000 - redirects to convert when second arg is a number 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "10,000 DOGE = $248.742",
-}
-`;
+exports[`/price doge 10000 - redirects to convert when second arg is a number 1`] = `"10,000 DOGE = $248.742"`;
 
 exports[`/price ethereum eur - supports other currencies 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Ethereum (ETH)* in EUR
 Current price:  \`€1,019.44\`
@@ -225,8 +135,6 @@ _(updated Sun, 17 Jan 2021 19:03:27 GMT)_",
 
 exports[`/price peakd - finds coins by name partial match 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*PEAKDEFI (PEAK)* in USD
 Current price:  \`$0.269714\`
@@ -237,75 +145,27 @@ _(updated Sun, 17 Jan 2021 19:00:08 GMT)_",
 }
 `;
 
-exports[`/regret - defaults to 10,000 btc sold at $41 usd 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "If you hadn't sold your 10,000 BTC for $41, you'd be $358,069,959 richer now 🚀! ... fuck!",
-}
-`;
+exports[`/regret - defaults to 10,000 btc sold at $41 usd 1`] = `"If you hadn't sold your 10,000 BTC for $41, you'd be $358,069,959 richer now 🚀! ... fuck!"`;
 
-exports[`/regret 0.5 eth 500 aud - supports other currencies 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "If you hadn't sold your 0.5 ETH for A$500, you'd be A$301.015 richer now 🚀!",
-}
-`;
+exports[`/regret 0.5 eth 500 aud - supports other currencies 1`] = `"If you hadn't sold your 0.5 ETH for A$500, you'd be A$301.015 richer now 🚀!"`;
 
-exports[`/regret 1 asdfasdf - returns an error for invalid coin 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I couldn't find asdfasdf. Try using the full name",
-}
-`;
+exports[`/regret 1 asdfasdf - returns an error for invalid coin 1`] = `"Sorry, I couldn't find asdfasdf. Try using the full name"`;
 
 exports[`/regret 1 btc 100 asdfasdf - returns an error for invalid vs 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Sorry, I can't get prices in asdfasdf.
-Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc.",
-}
+"Sorry, I can't get prices in asdfasdf.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
 `;
 
-exports[`/regret 1 btc foo - returns an error for invalid soldAt 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Amount 'foo' is not a valid number",
-}
-`;
+exports[`/regret 1 btc foo - returns an error for invalid soldAt 1`] = `"Amount 'foo' is not a valid number"`;
 
-exports[`/regret 1000 xrp 1000 - congratulates no ragerts 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Wow, No Ragerts 💥! Your 1,000 XRP would be worth $722.786 less today than the $1,000 you sold it for!",
-}
-`;
+exports[`/regret 1000 xrp 1000 - congratulates no ragerts 1`] = `"Wow, No Ragerts 💥! Your 1,000 XRP would be worth $722.786 less today than the $1,000 you sold it for!"`;
 
-exports[`/regret foo - returns an error for invalid amount 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Amount 'foo' is not a valid number",
-}
-`;
+exports[`/regret foo - returns an error for invalid amount 1`] = `"Amount 'foo' is not a valid number"`;
 
-exports[`/start - shows a welcome message 1`] = `
-Object {
-  "chat_id": 2,
-  "method": "sendMessage",
-  "text": "Hi there! To get started try typing /price",
-}
-`;
+exports[`/start - shows a welcome message 1`] = `"Hi there! To get started try typing /price"`;
 
 exports[`/top10 - defaults to USD 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Top 10 Cryptocurrencies*
 *1. Bitcoin:*  $35,650 (\`-1.98%\`) - Market $664,301,629,391
@@ -324,8 +184,6 @@ _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 
 exports[`/top10 aud - supports other vs currencies 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Top 10 Cryptocurrencies*
 *1. Bitcoin:*  A$46,379 (\`-1.77%\`) - Market A$864,220,547,550
@@ -344,8 +202,6 @@ _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 
 exports[`/top20 - defaults to USD 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Top 20 Cryptocurrencies*
 *1. Bitcoin:*  $35,650 (\`-1.98%\`)
@@ -374,8 +230,6 @@ _(updated Sun, 17 Jan 2021 20:02:26 GMT)_",
 
 exports[`/top20 btc - supports other vs currencies 1`] = `
 Object {
-  "chat_id": 2,
-  "method": "sendMessage",
   "parse_mode": "markdown",
   "text": "*Top 20 Cryptocurrencies*
 *1. Bitcoin:*  1 BTC (\`0%\`)

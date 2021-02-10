@@ -14,6 +14,8 @@
     "ecmaVersion": 11
   },
   "rules": {
-    "linebreak-style": ["error", "unix"]
+    "linebreak-style": ["error", "unix"],
+    "jest/valid-title": ["off"],
+    "jest/no-conditional-expect": ["off"]
   }
 }

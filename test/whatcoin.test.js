@@ -1,28 +1,25 @@
-/* eslint-disable jest/valid-title */
-const telegramWebhook = require('../telegram-webhook');
-const ctx = require('./defaultContext');
+const webhook = require('../src/webhook');
+const handler = require('../src/handler');
+const defaultCtx = require('./defaultContext');
 const nock = require('nock');
 const filenamify = require('filenamify');
+const fs = require('fs');
+const { toMatchImageSnapshot } = require('jest-image-snapshot');
+const {
+  MessageEnv,
+  utils: { isObject },
+} = require('serverless-telegram');
+
+expect.extend({ toMatchImageSnapshot });
 
 afterAll(() => nock.restore());
 
 nock.back.fixtures = __dirname + '/__fixtures__/';
 nock.back.setMode(process.env.CI ? 'lockdown' : 'record');
 
-const msgReply = async (text, locale) => {
-  const req = {
-    body: {
-      update_id: 1,
-      message: { text, from: { language_code: locale }, chat: { id: 2 } },
-    },
-  };
-  const res = await telegramWebhook(ctx, req);
-  return res?.body;
-};
-
-const msgReplyText = async (text) => (await msgReply(text))?.text;
-
+let ctx = { ...defaultCtx };
 beforeEach(async () => {
+  ctx = { ...defaultCtx };
   const state = expect.getState();
   state.nockBack = await nock.back(`${filenamify(state.currentTestName)}.json`);
 });
@@ -33,21 +30,25 @@ afterEach(() => {
   nockBack.context.assertScopesFinished();
 });
 
+const updateReplyText = async (text) => {
+  /** @type {import('serverless-telegram').HttpRequest} */
+  // @ts-ignore
+  const req = { body: { update_id: 1, message: { text, chat: { id: 2 } } } };
+  const res = await webhook(ctx, req);
+  return res?.body?.text;
+};
+
 describe('webhook', () => {
   it('ignores everything except known commands', async () => {
-    expect(await msgReplyText('/foo')).toBeUndefined();
-    expect(await msgReplyText('bar')).toBeUndefined();
-    expect(await msgReplyText()).toBeUndefined();
+    expect(await updateReplyText('/foo')).toBeUndefined();
+    expect(await updateReplyText('bar')).toBeUndefined();
+    expect(await updateReplyText()).toBeUndefined();
   });
 });
 
 describe('/version', () => {
   it('- shows name and version info', () =>
-    expect(msgReply('/version')).resolves.toMatchObject({
-      chat_id: 2,
-      method: 'sendMessage',
-      text: /Whatcoin v[\d.]+/,
-    }));
+    expect(updateReplyText('/version')).resolves.toMatch(/Whatcoin v[\d.]+/));
 });
 
 const commandTests = {
@@ -91,16 +92,35 @@ const commandTests = {
   ],
   '/top10': [['defaults to USD'], ['supports other vs currencies', 'aud']],
   '/top20': [['defaults to USD'], ['supports other vs currencies', 'btc']],
+  '/chart': [
+    ['defaults to bitcoin in USD - last 1d'],
+    ['supports other options', 'eth aud 30'],
+    ['turns red if price is falling', 'usdc'],
+  ],
 };
 
 const toArray = (t) => (Array.isArray(t) ? t : [t]);
 
+process.env.BOT_API_TOKEN = process.env.BOT_API_TOKEN || '1111:fake_token';
+
+const msgReply = async (text, locale) => {
+  /** @type {import('serverless-telegram').Message} */
+  // @ts-ignore
+  const message = { text, from: { language_code: locale }, chat: { id: 2 } };
+  return handler(message, new MessageEnv(ctx, message));
+};
+
 for (const [command, tests] of Object.entries(commandTests)) {
   describe(command, () => {
     for (const [desc, args, locale] of toArray(tests).map(toArray)) {
-      it(args ? `${args} - ${desc}` : `- ${desc}`, () => {
+      it(args ? `${args} - ${desc}` : `- ${desc}`, async () => {
         const text = args ? `${command} ${args}` : command;
-        return expect(msgReply(text, locale)).resolves.toMatchSnapshot();
+        const res = await msgReply(text, locale);
+        if (isObject(res) && res.photo) {
+          await expect(fs.readFileSync(res.photo)).toMatchImageSnapshot();
+          res.photo = `see image snapshot ${expect.getState().currentTestName}`;
+        }
+        expect(res).toMatchSnapshot();
       });
     }
   });
