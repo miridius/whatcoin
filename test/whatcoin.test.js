@@ -117,7 +117,13 @@ for (const [command, tests] of Object.entries(commandTests)) {
         const text = args ? `${command} ${args}` : command;
         const res = await msgReply(text, locale);
         if (isObject(res) && res.photo) {
-          await expect(fs.readFileSync(res.photo)).toMatchImageSnapshot();
+          await expect(fs.readFileSync(res.photo)).toMatchImageSnapshot({
+            allowSizeMismatch: true,
+            customDiffConfig: { threshold: 0.05 },
+            failureThreshold: 0.05,
+            failureThresholdType: 'percent',
+            dumpDiffToConsole: !!process.env.CI,
+          });
           res.photo = `see image snapshot ${expect.getState().currentTestName}`;
         }
         expect(res).toMatchSnapshot();

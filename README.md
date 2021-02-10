@@ -22,6 +22,7 @@ Notes:
 - [x] `/regret` - show how much money you missed out on cos you sold too early - e.g `/regret 10000 BTC 41 USD`
 - [x] `/top10` - get the top 10 currencies by market cap, with optional conversion (symbol). E.g. `/top10 gbp`
 - [x] `/top20` - get the top 20 currencies by market cap, with optional conversion (symbol). E.g. `/top20 btc`
+- [x] `/chart` - generate a chart of price & volume for the last X days and send it as an image
 - [ ] `/markets` - show a list of markets (exchanges) where a currency can be traded. E.g. `/markets ark`
 - [x] `/version` - show bot version (on deploy: send notification/update bot name?)
 - [ ] `/help` - show commands & their arguments
@@ -36,6 +37,7 @@ convert - <amount=1> <from=BTC> <to=USD>
 top10 - <in=USD>
 top20 - <in=USD>
 regret - <amt> <coin> <soldFor> <in=USD>
+chart - <coin=btc> <in=USD> <days=1>
 ```
 
 ## Local development
