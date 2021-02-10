@@ -94,6 +94,10 @@ const commandTests = {
     ['defaults to bitcoin in USD - last 1d'],
     ['supports other options', 'eth aud 30'],
     ['turns red if price is falling', 'usdc'],
+    ['shows most appropriate error', 'doge doge 90'],
+    ['shows most appropriate error', 'doge 90 doge'],
+    ['shows most appropriate error', '90 doge doge'],
+    ['shows most appropriate error', 'doge doge doge'],
   ],
 };
 

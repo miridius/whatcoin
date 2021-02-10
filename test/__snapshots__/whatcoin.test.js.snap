@@ -6,6 +6,23 @@ Object {
 }
 `;
 
+exports[`/chart 90 doge doge - shows most appropriate error 1`] = `
+"Sorry, I can't get prices in doge.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
+`;
+
+exports[`/chart doge 90 doge - shows most appropriate error 1`] = `
+"Sorry, I can't get prices in doge.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
+`;
+
+exports[`/chart doge doge 90 - shows most appropriate error 1`] = `
+"Sorry, I can't get prices in doge.
+Try using a major currency symbol such as USD, EUR, GBP, BTC, ETH, LTC, etc."
+`;
+
+exports[`/chart doge doge doge - shows most appropriate error 1`] = `"Amount 'doge' is not a valid number"`;
+
 exports[`/chart eth aud 30 - supports other options 2`] = `
 Object {
   "photo": "see image snapshot /chart eth aud 30 - supports other options",

@@ -270,7 +270,8 @@ class WhatcoinEnv extends MessageEnv {
    * @param {string[]} args
    */
   async execute(cmd, args) {
-    let firstError;
+    let closestErrorCount;
+    let closestError;
     for (const [command, argSpecs, commandParser, argTransform] of commands) {
       if (command !== cmd) continue;
       const vals = await Promise.all(
@@ -281,17 +282,20 @@ class WhatcoinEnv extends MessageEnv {
           return { parsed, error };
         }),
       );
-      const error = vals.find((v) => v.error)?.error;
-      if (error) {
-        firstError = firstError ?? error;
+      const errorCount = vals.filter((v) => v.error).length;
+      if (errorCount) {
+        if (closestErrorCount == undefined || errorCount < closestErrorCount) {
+          closestErrorCount = errorCount;
+          closestError = vals.find((v) => v.error)?.error;
+        }
       } else {
         let parsed = vals.map((v) => v.parsed);
         if (argTransform) parsed = argTransform(parsed);
         return commandParser.apply(this, parsed);
       }
     }
-    if (!firstError) this.warn(`Unknown command: ${cmd}`);
-    return firstError;
+    if (!closestError) this.warn(`Unknown command: ${cmd}`);
+    return closestError;
   }
 
   /**
