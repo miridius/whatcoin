@@ -1,6 +1,6 @@
 const webhook = require('../src/webhook');
 const handler = require('../src/handler');
-const defaultCtx = require('./defaultContext');
+const ctx = require('./defaultContext');
 const nock = require('nock');
 const filenamify = require('filenamify');
 const fs = require('fs');
@@ -17,9 +17,7 @@ afterAll(() => nock.restore());
 nock.back.fixtures = __dirname + '/__fixtures__/';
 nock.back.setMode(process.env.CI ? 'lockdown' : 'record');
 
-let ctx = { ...defaultCtx };
 beforeEach(async () => {
-  ctx = { ...defaultCtx };
   const state = expect.getState();
   state.nockBack = await nock.back(`${filenamify(state.currentTestName)}.json`);
 });
