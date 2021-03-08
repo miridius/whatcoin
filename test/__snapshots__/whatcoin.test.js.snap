@@ -67,6 +67,23 @@ exports[`/convert 1000 ethereum aud - supports other currencies 1`] = `"1,000 ET
 
 exports[`/convert foo - returns an error for invalid amount 1`] = `"Amount 'foo' is not a valid number"`;
 
+exports[`/ohlc - defaults to bitcoin in USD - last 1d 2`] = `
+Object {
+  "photo": "see image snapshot /ohlc - defaults to bitcoin in USD - last 1d",
+}
+`;
+
+exports[`/ohlc 31 - throws an error for unsupported number of days 1`] = `
+"'31' is not a valid number of days for OHLC charts.
+Supported options are: 1, 7, 14, 30, 90, 180, 365, max"
+`;
+
+exports[`/ohlc eth aud max - supports other options 2`] = `
+Object {
+  "photo": "see image snapshot /ohlc eth aud max - supports other options",
+}
+`;
+
 exports[`/price - defaults to btc in usd 1`] = `
 Object {
   "parse_mode": "markdown",

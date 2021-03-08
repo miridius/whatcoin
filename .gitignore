@@ -89,7 +89,6 @@ out
 
 # Azure Functions artifacts
 appsettings.json
-local.settings.json
 package/
 
 # Image snapshot diffs

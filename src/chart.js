@@ -1,9 +1,6 @@
 const CoinGecko = require('coingecko-api');
-const vega = require('vega');
 const { compile } = require('vega-lite');
-
-const os = require('os');
-const path = require('path');
+const vega = require('vega');
 const sharp = require('sharp');
 
 const api = new CoinGecko();
@@ -25,7 +22,7 @@ const theme = {
   dates: '#8F8F8F',
 };
 
-const getData = async (id, vs_currency, days) => {
+const getChartData = async (id, vs_currency, days) => {
   const { data } = await api.coins.fetchMarketChart(id, { vs_currency, days });
   return {
     values: data.total_volumes
@@ -35,19 +32,18 @@ const getData = async (id, vs_currency, days) => {
   };
 };
 
-const capitalise = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+const makeTitle = (name, vs, days) =>
+  `${name} vs ${vs.toUpperCase()} - last ${days} day${days == 1 ? '' : 's'}`;
 
-const createSpec = (name, vs, days, values, isRising) => {
+const createChartSpec = (name, vs, days, values, isRising) => {
   const priceColor = isRising ? theme.priceUp : theme.priceDown;
   return compile({
     $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
-    description:
-      'A dual axis chart, created by setting y\'s scale resolution to `"independent"`',
-    width: 800,
-    height: 600,
+    width: 700,
+    height: 500,
     background: theme.background,
     title: {
-      text: `${capitalise(name)} - last ${days}d`,
+      text: makeTitle(name, vs, days),
       fontSize,
       font,
       color: theme.title,
@@ -65,7 +61,6 @@ const createSpec = (name, vs, days, values, isRising) => {
           labelColor: theme.dates,
           labelFontSize,
           grid: false,
-          // gridColor: theme.dates,
         },
       },
       y: { type: 'quantitative' },
@@ -130,27 +125,71 @@ const createSpec = (name, vs, days, values, isRising) => {
   }).spec;
 };
 
-/**
- * Generate a static PNG image
- * @param {string} svg
- */
-const savePng = async (svg) => {
-  const filePath = path.resolve(os.tmpdir(), `${+new Date()}.png`);
-  await sharp(Buffer.from(svg)).toFile(filePath);
-  return filePath;
+const createOhlcSpec = ({ id, name }, vs, days) => {
+  return compile({
+    $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+    width: 700,
+    height: 500,
+    title: {
+      text: makeTitle(name, vs, days),
+      fontSize,
+      font,
+    },
+    data: {
+      url: `https://api.coingecko.com/api/v3/coins/${id}/ohlc?vs_currency=${vs}&days=${days}`,
+    },
+    encoding: {
+      x: {
+        field: '0',
+        type: 'temporal',
+        axis: {
+          format: '%d/%m %H:%M',
+          labelAngle: -45,
+          title: null,
+        },
+      },
+      y: {
+        type: 'quantitative',
+        scale: { zero: false },
+        axis: {
+          title: `Price (${vs.toUpperCase()})`,
+          titleFontSize,
+          titleFont,
+          labelFontSize,
+        },
+      },
+      color: {
+        condition: {
+          test: 'datum[1] < datum[4]',
+          value: '#06982d',
+        },
+        value: '#ae1325',
+      },
+    },
+    layer: [
+      {
+        mark: 'rule',
+        encoding: {
+          y: { field: '2' },
+          y2: { field: '3' },
+        },
+      },
+      {
+        mark: 'bar',
+        encoding: {
+          y: { field: '1' },
+          y2: { field: '4' },
+        },
+      },
+    ],
+  }).spec;
 };
 
-/** @this {import('serverless-telegram').MessageEnv} */
-exports.makeChart = async function ({ id, name }, vs, days) {
-  // let the user know we're working on it... (`await` ommitted intentionally)
-  this.send({ action: 'upload_photo' });
-
-  this.debug('fetching chart data...', id, vs, days);
-  const { values, isRising } = await getData(id, vs, days);
-
-  this.debug('compiling...');
-  const spec = createSpec(name, vs, days, values, isRising);
-
+/**
+ * @this {import('serverless-telegram').MessageEnv}
+ * @returns {Promise<import('serverless-telegram').MessageResponse>}
+ */
+async function vegaToPng(spec, filename) {
   this.debug('rendering...');
   const view = new vega.View(vega.parse(spec), { renderer: 'none' });
 
@@ -158,6 +197,39 @@ exports.makeChart = async function ({ id, name }, vs, days) {
   const svg = await view.toSVG();
 
   this.debug('saving to PNG file...');
-  const photo = await savePng(svg);
-  return { photo };
+  const buffer = await sharp(Buffer.from(svg)).toBuffer();
+  return { photo: { buffer, filename } };
+}
+
+/**
+ * @this {import('serverless-telegram').MessageEnv}
+ * @returns {Promise<import('serverless-telegram').MessageResponse>}
+ */
+exports.makeChart = async function ({ id, name }, vs, days) {
+  // let the user know we're working on it... (`await` ommitted intentionally)
+  this.send({ action: 'upload_photo' });
+
+  this.debug('fetching chart data...', id, vs, days);
+  const { values, isRising } = await getChartData(id, vs, days);
+
+  this.debug('compiling...');
+  const spec = createChartSpec(name, vs, days, values, isRising);
+
+  const filename = `${id}_${vs}_${days}d_${new Date().toJSON()}.png`;
+  return vegaToPng.call(this, spec, filename);
+};
+
+/**
+ * @this {import('serverless-telegram').MessageEnv}
+ * @returns {Promise<import('serverless-telegram').MessageResponse>}
+ */
+exports.ohlc = async function (coin, vs, days) {
+  // let the user know we're working on it... (`await` ommitted intentionally)
+  this.send({ action: 'upload_photo' });
+
+  this.debug('compiling...');
+  const spec = createOhlcSpec(coin, vs, days);
+
+  const filename = `ohlc_${coin.id}_${vs}_${days}d_${new Date().toJSON()}.png`;
+  return vegaToPng.call(this, spec, filename);
 };
