@@ -35,10 +35,11 @@ Notes:
 ```
 price - <coin/symbol=bitcoin> <in=USD>
 convert - <amount=1> <from=BTC> <to=USD>
+chart - <coin=btc> <in=USD> <days=1>
+ohlc - <coin=btc> <in=USD> <days=1>
 top10 - <in=USD>
 top20 - <in=USD>
 regret - <amt> <coin> <soldFor> <in=USD>
-chart - <coin=btc> <in=USD> <days=1>
 ```
 
 ## Local development
