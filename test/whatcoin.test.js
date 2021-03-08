@@ -3,11 +3,13 @@ const handler = require('../src/handler');
 const ctx = require('./defaultContext');
 const nock = require('nock');
 const filenamify = require('filenamify');
-const fs = require('fs');
 const { toMatchImageSnapshot } = require('jest-image-snapshot');
 const {
   MessageEnv,
   utils: { isObject },
+} = require('serverless-telegram');
+const {
+  utils: { isFileBuffer },
 } = require('serverless-telegram');
 
 expect.extend({ toMatchImageSnapshot });
@@ -99,17 +101,35 @@ const commandTests = {
     ['shows most appropriate error', '90 doge doge'],
     ['shows most appropriate error', 'doge doge doge'],
   ],
+  '/ohlc': [
+    ['defaults to bitcoin in USD - last 1d'],
+    ['supports other options', 'eth aud max'],
+    ['throws an error for unsupported number of days', '31'],
+  ],
 };
 
 const toArray = (t) => (Array.isArray(t) ? t : [t]);
 
+const id = parseInt(process.env.TEST_CHAT_ID || '') || 2;
 process.env.BOT_API_TOKEN = process.env.BOT_API_TOKEN || '1111:fake_token';
 
 const msgReply = async (text, locale) => {
   /** @type {import('serverless-telegram').Message} */
   // @ts-ignore
-  const message = { text, from: { language_code: locale }, chat: { id: 2 } };
+  const message = { text, from: { language_code: locale }, chat: { id } };
   return handler(message, new MessageEnv(ctx, message));
+};
+
+const testPhoto = async (photo) => {
+  await expect(photo.buffer).toMatchImageSnapshot({
+    customDiffConfig: { threshold: 0.05 },
+    failureThreshold: 0.01,
+    failureThresholdType: 'percent',
+    updatePassedSnapshot: !process.env.CI,
+    dumpDiffToConsole: !!process.env.CI,
+  });
+  expect(photo.filename).toMatch(/\.png$/);
+  return `see image snapshot ${expect.getState().currentTestName}`;
 };
 
 for (const [command, tests] of Object.entries(commandTests)) {
@@ -118,15 +138,8 @@ for (const [command, tests] of Object.entries(commandTests)) {
       it(args ? `${args} - ${desc}` : `- ${desc}`, async () => {
         const text = args ? `${command} ${args}` : command;
         const res = await msgReply(text, locale);
-        if (isObject(res) && res.photo) {
-          await expect(fs.readFileSync(res.photo)).toMatchImageSnapshot({
-            customDiffConfig: { threshold: 0.05 },
-            failureThreshold: 0.01,
-            failureThresholdType: 'percent',
-            updatePassedSnapshot: !process.env.CI,
-            dumpDiffToConsole: !!process.env.CI,
-          });
-          res.photo = `see image snapshot ${expect.getState().currentTestName}`;
+        if (isObject(res) && isFileBuffer(res.photo)) {
+          res.photo = await testPhoto(res.photo);
         }
         expect(res).toMatchSnapshot();
       });

@@ -1,6 +1,6 @@
 const CoinGecko = require('coingecko-api');
 const { MessageEnv } = require('serverless-telegram');
-const { makeChart } = require('./chart');
+const { makeChart, ohlc } = require('./chart');
 const api = new CoinGecko();
 
 const memoize = (fn) => {
@@ -18,7 +18,8 @@ const getCoinsList = memoize(
     const coinsList = (await api.coins.list())?.data?.map((coin) => ({
       id: coin.id?.toLowerCase(),
       symbol: coin.symbol?.toLowerCase(),
-      name: coin.name?.toLowerCase(),
+      name: coin.name,
+      nameLowerCase: coin.name?.toLowerCase(),
     }));
     this.info('got', coinsList?.length, 'coins');
     return coinsList;
@@ -41,20 +42,20 @@ async function getCoin(searchString) {
   this.debug('searching for', searchString);
   let symbolMatch, nameMatch, idPreMatch, symbolPreMatch, namePreMatch;
   for (const coin of await getCoinsList.call(this)) {
-    const { id, symbol, name } = coin;
+    const { id, symbol, nameLowerCase } = coin;
     if (id === searchString) {
       this.debug(`${id} is an exact match`);
       return coin;
     } else if (symbol === searchString) {
       symbolMatch = coin;
       break; // don't need to keep searching, this is the best type of match
-    } else if (name === searchString) {
+    } else if (nameLowerCase === searchString) {
       nameMatch = coin;
     } else if (symbol.startsWith(searchString)) {
       symbolPreMatch = coin;
     } else if (id.startsWith(searchString)) {
       idPreMatch = coin;
-    } else if (name.startsWith(searchString)) {
+    } else if (nameLowerCase.startsWith(searchString)) {
       namePreMatch = coin;
     }
   }
@@ -84,6 +85,16 @@ function getAmount(amtString) {
   );
   this.debug('result:', num);
   return isNaN(num) ? undefined : num;
+}
+
+/** @this {WhatcoinEnv} */
+function getOhlcDays(days) {
+  if (typeof days === 'string' && days !== 'max') {
+    days = getAmount.call(this, days);
+  }
+  if ([1, 7, 14, 30, 90, 180, 365, 'max'].includes(days)) {
+    return days;
+  }
 }
 
 const reverseWords = (str) => str.split(/\s+/).reverse().join(' ');
@@ -215,6 +226,15 @@ const amount = {
   parser: getAmount,
   errorMsg: (input) => `Amount '${input}' is not a valid number`,
 };
+/** @type {ArgSpec} */
+const ohlcDays = {
+  defaultVal: 1,
+  parser: getOhlcDays,
+  errorMsg: (
+    input,
+  ) => `'${input}' is not a valid number of days for OHLC charts.
+Supported options are: 1, 7, 14, 30, 90, 180, 365, max`,
+};
 
 const withDefault = (argSpec, defaultVal) => ({ ...argSpec, defaultVal });
 
@@ -242,6 +262,9 @@ const commands = [
   ['/chart', [amount, coin, vs], makeChart, ([a, c, v]) => [c, v, a]],
   ['/chart', [coin, amount, vs], makeChart, ([c, a, v]) => [c, v, a]],
   ['/chart', [coin, vs, amount], makeChart],
+  ['/ohlc', [ohlcDays, coin, vs], ohlc, ([d, c, v]) => [c, v, d]],
+  ['/ohlc', [coin, ohlcDays, vs], ohlc, ([c, d, v]) => [c, v, d]],
+  ['/ohlc', [coin, vs, ohlcDays], ohlc],
 ];
 
 class WhatcoinEnv extends MessageEnv {
@@ -253,9 +276,10 @@ class WhatcoinEnv extends MessageEnv {
   }
 
   /** @param {import('serverless-telegram').Message} msg */
-  onMessage({ text }) {
+  async onMessage({ text }) {
     // ignore non-text messages and non-commands
     if (!text?.startsWith('/')) return;
+    // cold starts can take a while, send a chat action to let the user know
     // parse the message into command + args
     let [cmd, ...args] = text.split(/\s+/);
     // remove @mention if present
@@ -356,4 +380,4 @@ _(updated ${fmtDate(data.last_updated)})_`,
 }
 
 /** @type import('serverless-telegram').MessageHandler */
-module.exports = async (msg, env) => new WhatcoinEnv(env).onMessage(msg);
+module.exports = (msg, env) => new WhatcoinEnv(env).onMessage(msg);
