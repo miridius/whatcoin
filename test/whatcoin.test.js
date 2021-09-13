@@ -122,7 +122,7 @@ const msgReply = async (text, locale) => {
 
 const testPhoto = async (photo) => {
   await expect(photo.buffer).toMatchImageSnapshot({
-    customDiffConfig: { threshold: 0.05 },
+    customDiffConfig: { threshold: 0.06 },
     failureThreshold: 0.01,
     failureThresholdType: 'percent',
     updatePassedSnapshot: !process.env.CI,
