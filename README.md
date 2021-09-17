@@ -5,7 +5,7 @@
 
 WhatCoin is a Telegram Bot which gives price and market information about crypto currencies.
 
-It runs on Azure Functions using the [serverless-telegram](https://github.com/miridius/serverless-telegram) sister library.
+It runs on AWS Lambda using the [serverless-telegram](https://github.com/miridius/serverless-telegram) sister library.
 
 ## Bot Usage
 
@@ -51,5 +51,11 @@ regret - <amt> <coin> <soldFor> <in=USD>
 ## Deployment using CI/CD
 
 - Deployment will only run if lint and tests pass
-- Push to master (or merge a PR) to deploy to Staging (@DevWhatCoinBot)
+- Push to master (or merge a PR) to deploy to Staging (@TestWhatCoinBot)
 - Create a release using `npm run release` to deploy to Prod (@WhatCoinBot)
+
+## Manual deployment
+
+Run `npm run deploy` to build & deploy to a stack called "whatcoin-dev" using the BOT_API_TOKEN from your .env file.
+
+This can be useful for troubleshooting build & deployment issues, or issues which only occur when running in AWS but not locally.

@@ -1,4 +1,4 @@
-const webhook = require('../src/webhook');
+const webhook = require('../src/webhook').webhook;
 const handler = require('../src/handler');
 const ctx = require('./defaultContext');
 const nock = require('nock');
@@ -31,18 +31,19 @@ afterEach(() => {
 });
 
 const updateReplyText = async (text) => {
-  /** @type {import('serverless-telegram').HttpRequest} */
-  // @ts-ignore
-  const req = { body: { update_id: 1, message: { text, chat: { id: 2 } } } };
-  const res = await webhook(ctx, req);
-  return res?.body?.text;
+  const req = {
+    body: JSON.stringify({ update_id: 1, message: { text, chat: { id: 2 } } }),
+  };
+  //@ts-ignore
+  const res = await webhook(req, ctx);
+  return res.body && JSON.parse(res.body).text;
 };
 
 describe('webhook', () => {
   it('ignores everything except known commands', async () => {
-    expect(await updateReplyText('/foo')).toBeUndefined();
-    expect(await updateReplyText('bar')).toBeUndefined();
-    expect(await updateReplyText()).toBeUndefined();
+    expect(await updateReplyText('/foo')).toBeFalsy();
+    expect(await updateReplyText('bar')).toBeFalsy();
+    expect(await updateReplyText()).toBeFalsy();
   });
 });
 
@@ -122,7 +123,7 @@ const msgReply = async (text, locale) => {
 
 const testPhoto = async (photo) => {
   await expect(photo.buffer).toMatchImageSnapshot({
-    customDiffConfig: { threshold: 0.05 },
+    customDiffConfig: { threshold: 0.06 },
     failureThreshold: 0.01,
     failureThresholdType: 'percent',
     updatePassedSnapshot: !process.env.CI,

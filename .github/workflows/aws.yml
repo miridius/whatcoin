@@ -1,0 +1,79 @@
+name: Lint, Test, and Deploy to AWS using SAM
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  pull_request:
+    branches:
+      - master
+
+env:
+  AWS_STACK_NAME_STAGING: whatcoin-staging
+  AWS_STACK_NAME_PROD: whatcoin
+  AWS_REGION: eu-central-1
+  NODE_VERSION: '14.x'
+
+jobs:
+  test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  deploy:
+    name: Deploy
+    if: ${{ github.event_name == 'push' }}
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - uses: aws-actions/setup-sam@v1
+      - uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Build
+        run: sam build
+
+      - name: Deploy to Staging (${{ env.AWS_STACK_NAME_STAGING }})
+        if: ${{ startsWith(github.ref, 'refs/heads/') }}
+        run: >
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+          --stack-name ${{ env.AWS_STACK_NAME_STAGING }}
+          --parameter-overrides BotApiToken=${{ secrets.BOT_API_TOKEN_STAGING }}
+
+      - name: Deploy to Prod (${{ env.AWS_STACK_NAME_PROD }})
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+        run: >
+          sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
+          --stack-name ${{ env.AWS_STACK_NAME_PROD }}
+          --parameter-overrides BotApiToken=${{ secrets.BOT_API_TOKEN_PROD }}

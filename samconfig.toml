@@ -1,0 +1,14 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "whatcoin"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-o69yjxke7qem"
+s3_prefix = "whatcoin"
+region = "eu-central-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = []
+[default.global.parameters]
+stack_name = "whatcoin"
+[default.logs.parameters]
+name = "WebhookFunction"
