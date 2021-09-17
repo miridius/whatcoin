@@ -5,26 +5,34 @@
   "author": "David D. Rolle",
   "license": "UNLICENSED",
   "private": true,
+  "files": [
+    "src",
+    "fonts"
+  ],
   "scripts": {
     "start": "func start",
-    "dev": "nodemon -x env-cmd start-dev-server",
+    "dev": "nodemon -x env-cmd start-dev-server src/webhook.lambdaHandler",
     "lint": "eslint \"**/*.js\" && prettier -c \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
     "lint:fix": "eslint --fix \"**/*.js\" && prettier -w \"**/*.{js,css,md,json}\" --ignore-path .gitignore",
     "test": "jest --ci",
     "test:update": "env-cmd jest -u",
     "test:watch": "jest --watchAll",
     "update-deps": "ncu -u --doctor -x husky && npm run lint:fix && ncu -u --doctor -t minor && npm run lint",
-    "release": "npx ncu -e2 -t minor && npx np --no-publish --no-yarn"
+    "release": "npx ncu -e2 -t minor && npx np --no-publish --no-yarn",
+    "deploy": "sam build && env-cmd npm run deploy-dev",
+    "deploy-dev": "sam deploy --stack-name whatcoin-dev --parameter-overrides BotApiToken=$BOT_API_TOKEN",
+    "set-webhook": "env-cmd set-webhook"
   },
   "dependencies": {
     "coingecko-api": "^1.0.10",
-    "serverless-telegram": "^0.6.0",
+    "serverless-telegram": "^0.6.1",
     "sharp": "^0.29.1",
     "vega": "^5.20.2",
     "vega-lite": "^4.17.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
+    "env-cmd": "^10.1.0",
     "eslint": "^7.32.0",
     "eslint-plugin-jest": "^24.4.0",
     "filenamify": "^4.3.0",
@@ -33,6 +41,7 @@
     "jest-image-snapshot": "^4.5.1",
     "lint-staged": "^11.1.2",
     "nock": "^13.1.3",
+    "nodemon": "^2.0.12",
     "npm-check-updates": "^11.8.5",
     "prettier": "^2.4.0"
   },

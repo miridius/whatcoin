@@ -87,9 +87,9 @@ typings/
 dist
 out
 
-# Azure Functions artifacts
-appsettings.json
-package/
-
 # Image snapshot diffs
 __diff_output__/
+
+# AWS build artifacts
+.aws-sam/
+src/package*.json
