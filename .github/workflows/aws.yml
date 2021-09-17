@@ -43,7 +43,7 @@ jobs:
 
   deploy:
     name: Deploy
-    # if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' }}
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +65,7 @@ jobs:
         run: sam build
 
       - name: Deploy to Staging (${{ env.AWS_STACK_NAME_STAGING }})
-        # if: ${{ startsWith(github.ref, 'refs/heads/') }}
+        if: ${{ startsWith(github.ref, 'refs/heads/') }}
         run: >
           sam deploy --no-confirm-changeset --no-fail-on-empty-changeset
           --stack-name ${{ env.AWS_STACK_NAME_STAGING }}
