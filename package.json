@@ -27,7 +27,7 @@
     "coingecko-api": "^1.0.10",
     "serverless-telegram": "^0.7.0",
     "sharp": "^0.29.3",
-    "vega": "^5.20.2",
+    "vega": "^5.22.0",
     "vega-lite": "^4.17.0"
   },
   "devDependencies": {
